@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace EntryPoint
@@ -8,19 +9,9 @@ namespace EntryPoint
 #if WINDOWS || LINUX
   public static class Program
   {
-    /*
-    static void CrashMe(int n)
-    {
-      Console.Write("Going strong at level " + n + "\r                       ");
-      CrashMe(n + 1);
-    }
-    */
-
     [STAThread]
     static void Main()
     {
-      //CrashMe(0);
-
       var fullscreen = false;
       read_input:
       switch (Microsoft.VisualBasic.Interaction.InputBox("Which assignment shall run next? (1, 2, 3, 4, or q for quit)", "Choose assignment", VirtualCity.GetInitialValue()))
@@ -48,9 +39,25 @@ namespace EntryPoint
     }
 
     private static IEnumerable<Vector2> SortSpecialBuildingsByDistance(Vector2 house, IEnumerable<Vector2> specialBuildings) // EXERCISE 1 - Sorting  EXERCISE 1 - Sorting  EXERCISE 1 - Sorting  !!!!!!
-        {
-      return specialBuildings.OrderBy(v => Vector2.Distance(v, house));
+    {
+       //List<Vector2> sorted_list = specialBuildings.ToList<Vector2>();
+       //int list_length = sorted_list.Count();  // list_length = 50  for 1st iteration
+       //int list_half_length = list_length / 2; // list_half_length = 25 for 1st iteration
+
+       //List<Vector2> first_half_list = sorted_list.GetRange(0, sorted_list.Count() / 2);                   // (0, 25 - 1) = (0, 24) for 1st iteration
+       //List<Vector2> second_half_list = sorted_list.GetRange(sorted_list.Count() / 2, sorted_list.Count() / 2);        // (25, 50 - 1) = (25, 49) for 1st iteration   count is number of elements in range
+
+       //SortSpecialBuildingsByDistance(house, first_half_list.AsEnumerable<Vector2>());
+       //SortSpecialBuildingsByDistance(house, sorted_list.GetRange(0, sorted_list.Count() / 2).AsEnumerable<Vector2>()); //
+       //SortSpecialBuildingsByDistance(house, sorted_list.GetRange(sorted_list.Count() / 2, sorted_list.Count() / 2).AsEnumerable<Vector2>());
+
+       SortSpecialBuildingsByDistance(house, specialBuildings.ToList<Vector2>().GetRange(0, specialBuildings.ToList<Vector2>().Count() / 2).AsEnumerable<Vector2>()); //
+       SortSpecialBuildingsByDistance(house, specialBuildings.ToList<Vector2>().GetRange(specialBuildings.ToList<Vector2>().Count() / 2, specialBuildings.ToList<Vector2>().Count() / 2).AsEnumerable<Vector2>());
+
+       return specialBuildings.OrderBy(v => Vector2.Distance(v, house));
     }
+
+    //
 
     private static IEnumerable<IEnumerable<Vector2>> FindSpecialBuildingsWithinDistanceFromHouse( // EXERCISE 2 - Trees  EXERCISE 2 - Trees  EXERCISE 2 - Trees  EXERCISE 2 - Trees !!!!!!!!
       IEnumerable<Vector2> specialBuildings, 
@@ -63,6 +70,8 @@ namespace EntryPoint
             where Vector2.Distance(h.Item1, s) <= h.Item2
             select s;
     }
+
+    //
 
     private static IEnumerable<Tuple<Vector2, Vector2>> FindRoute(Vector2 startingBuilding, // EXERCISE 3 - Graphs  Option 1: Dijkstra  EXERCISE 3 - Graphs  Option 1: Dijkstra  EXERCISE 3 - Graphs  Option 1: Dijkstra !!!!!!!!!
       Vector2 destinationBuilding, IEnumerable<Tuple<Vector2, Vector2>> roads)
@@ -77,6 +86,8 @@ namespace EntryPoint
       }
       return fakeBestPath;
     }
+
+    //
 
     private static IEnumerable<IEnumerable<Tuple<Vector2, Vector2>>> FindRoutesToAll(Vector2 startingBuilding, // EXERCISE 3 - Graphs  Option 2: Floyd-Marshall  EXERCISE 3 - Graphs  Option 2: Floyd-Marshall  EXERCISE 3 - Graphs  Option 2: Floyd-Marshall !!!!!!!!!
       IEnumerable<Vector2> destinationBuildings, IEnumerable<Tuple<Vector2, Vector2>> roads)
@@ -99,3 +110,28 @@ namespace EntryPoint
   }
 #endif
 }
+
+/*
+
+*/
+
+//Console.WriteLine(list_half_length);
+//Console.WriteLine(sorted_list.Count()); // List contains 50 elements
+/*
+for(int i = 0; i < list_length; i++)
+{
+   Console.WriteLine(i);
+   Console.WriteLine(sorted_list.ElementAt(i));
+}
+*/
+
+//Console.WriteLine("Dont you cry no more");
+
+/*
+for (int i = 0; i < list_half_length - 1; i++)
+{
+  Console.WriteLine(i);
+  Console.WriteLine(first_half_list.ElementAt(i));
+}
+*/
+

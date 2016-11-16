@@ -61,3 +61,24 @@ namespace EntryPoint
         */
     }
 }
+
+/*
+  private static IEnumerable<Vector2> SortSpecialBuildingsByDistance(Vector2 house, IEnumerable<Vector2> specialBuildings) // EXERCISE 1 - Sorting  EXERCISE 1 - Sorting  EXERCISE 1 - Sorting  !!!!!!
+    {
+       List<Vector2> sorted_list = specialBuildings.ToList<Vector2>();
+       //Console.WriteLine(sorted_list.Count()); // List contains 50 elements
+       int list_length = sorted_list.Count();  // list_length = 50  for 1st iteration
+       int list_half_length = list_length / 2; // list_half_length = 25 for 1st iteration
+
+       List<Vector2> first_half_list = sorted_list.GetRange(0, list_half_length);                   // (0, 25 - 1) = (0, 24) for 1st iteration
+       IEnumerable<Vector2> converted_first_half_list = first_half_list.AsEnumerable<Vector2>();
+
+       List<Vector2> second_half_list = sorted_list.GetRange(list_half_length, list_half_length);        // (25, 50 - 1) = (25, 49) for 1st iteration   count is number of elements in range
+       IEnumerable<Vector2> converted_second_half_list = second_half_list.AsEnumerable<Vector2>();
+
+       SortSpecialBuildingsByDistance(house, converted_first_half_list);
+       SortSpecialBuildingsByDistance(house, converted_second_half_list);
+
+       return specialBuildings.OrderBy(v => Vector2.Distance(v, house));
+    }
+*/
