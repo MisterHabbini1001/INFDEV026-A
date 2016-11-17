@@ -40,26 +40,22 @@ namespace EntryPoint
 
     private static IEnumerable<Vector2> SortSpecialBuildingsByDistance(Vector2 house, IEnumerable<Vector2> specialBuildings) // EXERCISE 1 - Sorting  EXERCISE 1 - Sorting  EXERCISE 1 - Sorting  !!!!!!
     {
-       //List<Vector2> sorted_list = specialBuildings.ToList<Vector2>();
-       //int list_length = sorted_list.Count();  // list_length = 50  for 1st iteration
-       //int list_half_length = list_length / 2; // list_half_length = 25 for 1st iteration
+       MergeSortAlgorithm algorithm_stuff = new MergeSortAlgorithm();
+       List<Vector2> unsorted_list = specialBuildings.ToList<Vector2>();
+       //unsorted_list.ConvertAll<Vector2, IComparable<Vector2>>(new Converter<Vector2, IComparable<Vector2>>(PointFToPoint));
+       IEnumerable<Vector2> sorted_list = algorithm_stuff.MergeSort<Vector2>(unsorted_list).AsEnumerable<Vector2>();
+       //return sorted_list;
+       return sorted_list.OrderBy(v => Vector2.Distance(v, house));
+       //return specialBuildings.OrderBy(v => Vector2.Distance(v, house));
 
-       //List<Vector2> first_half_list = sorted_list.GetRange(0, sorted_list.Count() / 2);                   // (0, 25 - 1) = (0, 24) for 1st iteration
-       //List<Vector2> second_half_list = sorted_list.GetRange(sorted_list.Count() / 2, sorted_list.Count() / 2);        // (25, 50 - 1) = (25, 49) for 1st iteration   count is number of elements in range
+       // STEP 1: Converteren naar List<T>
+       // STEP 2: Maak Sort functie aan   die zichzelf aanroopt  recursive    Checken of list 1 element heeft vooraf, anders infinite recursive zooi
+       // STEP 3: Maak Merge functie aan  die zichzelf NIET aanroept want statisch   Krijgt 2 lijsten binnen   Wordt aangeroepen door Sort
+   }
 
-       //SortSpecialBuildingsByDistance(house, first_half_list.AsEnumerable<Vector2>());
-       //SortSpecialBuildingsByDistance(house, sorted_list.GetRange(0, sorted_list.Count() / 2).AsEnumerable<Vector2>()); //
-       //SortSpecialBuildingsByDistance(house, sorted_list.GetRange(sorted_list.Count() / 2, sorted_list.Count() / 2).AsEnumerable<Vector2>());
+        //
 
-       SortSpecialBuildingsByDistance(house, specialBuildings.ToList<Vector2>().GetRange(0, specialBuildings.ToList<Vector2>().Count() / 2).AsEnumerable<Vector2>()); //
-       SortSpecialBuildingsByDistance(house, specialBuildings.ToList<Vector2>().GetRange(specialBuildings.ToList<Vector2>().Count() / 2, specialBuildings.ToList<Vector2>().Count() / 2).AsEnumerable<Vector2>());
-
-       return specialBuildings.OrderBy(v => Vector2.Distance(v, house));
-    }
-
-    //
-
-    private static IEnumerable<IEnumerable<Vector2>> FindSpecialBuildingsWithinDistanceFromHouse( // EXERCISE 2 - Trees  EXERCISE 2 - Trees  EXERCISE 2 - Trees  EXERCISE 2 - Trees !!!!!!!!
+        private static IEnumerable<IEnumerable<Vector2>> FindSpecialBuildingsWithinDistanceFromHouse( // EXERCISE 2 - Trees  EXERCISE 2 - Trees  EXERCISE 2 - Trees  EXERCISE 2 - Trees !!!!!!!!
       IEnumerable<Vector2> specialBuildings, 
       IEnumerable<Tuple<Vector2, float>> housesAndDistances)
     {
@@ -112,26 +108,20 @@ namespace EntryPoint
 }
 
 /*
+    private static IEnumerable<Vector2> SortSpecialBuildingsByDistance(Vector2 house, IEnumerable<Vector2> specialBuildings) // EXERCISE 1 - Sorting  EXERCISE 1 - Sorting  EXERCISE 1 - Sorting  !!!!!!
+    {
+       MergeSortAlgorithm algorithm_stuff = new MergeSortAlgorithm();
+       List<Vector2> unsorted_list = specialBuildings.ToList<Vector2>();
+       algorithm_stuff.MergeSort<System.IComparable<Vector2>>(unsorted_list);
+       IEnumerable<Vector2> sorted_list = algorithm_stuff.MergeSort<System.IComparable<Vector2>>(unsorted_list).AsEnumerable<Vector2>();
+       return sorted_list;
+       //return specialBuildings.OrderBy(v => Vector2.Distance(v, house));
 
+       // STEP 1: Converteren naar List<T>
+       // STEP 2: Maak Sort functie aan   die zichzelf aanroopt  recursive    Checken of list 1 element heeft vooraf, anders infinite recursive zooi
+       // STEP 3: Maak Merge functie aan  die zichzelf NIET aanroept want statisch   Krijgt 2 lijsten binnen   Wordt aangeroepen door Sort
+    }
 */
 
-//Console.WriteLine(list_half_length);
-//Console.WriteLine(sorted_list.Count()); // List contains 50 elements
-/*
-for(int i = 0; i < list_length; i++)
-{
-   Console.WriteLine(i);
-   Console.WriteLine(sorted_list.ElementAt(i));
-}
-*/
 
-//Console.WriteLine("Dont you cry no more");
-
-/*
-for (int i = 0; i < list_half_length - 1; i++)
-{
-  Console.WriteLine(i);
-  Console.WriteLine(first_half_list.ElementAt(i));
-}
-*/
 
