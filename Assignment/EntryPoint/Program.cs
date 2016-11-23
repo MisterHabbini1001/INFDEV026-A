@@ -42,16 +42,24 @@ namespace EntryPoint
     {
        MergeSortAlgorithm algorithm_stuff = new MergeSortAlgorithm();
        List<Vector2> unsorted_list = specialBuildings.ToList<Vector2>();
-       //unsorted_list.ConvertAll<Vector2, IComparable<Vector2>>(new Converter<Vector2, IComparable<Vector2>>(PointFToPoint));
-       IEnumerable<Vector2> sorted_list = algorithm_stuff.MergeSort<Vector2>(unsorted_list).AsEnumerable<Vector2>();
-       //return sorted_list;
-       return sorted_list.OrderBy(v => Vector2.Distance(v, house));
-       //return specialBuildings.OrderBy(v => Vector2.Distance(v, house));
 
-       // STEP 1: Converteren naar List<T>
-       // STEP 2: Maak Sort functie aan   die zichzelf aanroopt  recursive    Checken of list 1 element heeft vooraf, anders infinite recursive zooi
-       // STEP 3: Maak Merge functie aan  die zichzelf NIET aanroept want statisch   Krijgt 2 lijsten binnen   Wordt aangeroepen door Sort
-   }
+       for (int i = 0; i < unsorted_list.Count; i++)
+       {
+         Console.WriteLine("Element " + i + " of unsorted list has value = " + unsorted_list.ElementAt(i));
+       }
+
+       IEnumerable<Vector2> sorted_list = algorithm_stuff.MergeSort<Vector2>(unsorted_list, house).AsEnumerable<Vector2>();
+       List<Vector2> sorted_list_two = sorted_list.ToList<Vector2>();
+
+       for (int j = 0; j < sorted_list_two.Count; j++)
+       {
+         Console.WriteLine("Element " + j + " of sorted list has value = " + sorted_list_two.ElementAt(j));
+       }
+
+       return sorted_list;
+       //return sorted_list.OrderBy(v => Vector2.Distance(v, house));
+       //return specialBuildings.OrderBy(v => Vector2.Distance(v, house));
+    }
 
         //
 
