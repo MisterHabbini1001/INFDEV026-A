@@ -40,8 +40,7 @@ namespace EntryPoint
 
     private static IEnumerable<Vector2> SortSpecialBuildingsByDistance(Vector2 house, IEnumerable<Vector2> specialBuildings) // EXERCISE 1 - Sorting  EXERCISE 1 - Sorting  EXERCISE 1 - Sorting  !!!!!!
     {
-       List<Vector2> unsorted_list = specialBuildings.ToList<Vector2>();
-       return MergeSortAlgorithm.DoMergeSort(unsorted_list, house); 
+       return MergeSortAlgorithm.MergeSort(specialBuildings.ToList<Vector2>(), house); 
     }
 
         //
