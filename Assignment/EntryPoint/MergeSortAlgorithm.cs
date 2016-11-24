@@ -89,16 +89,8 @@ namespace EntryPoint
 
         private static void MoveValueToResult(List<Vector2> list, List<Vector2> result)
         {
-            try
-            {
-                result.Add(list.First());
-                list.RemoveAt(0);
-            }
-
-            catch (OutOfMemoryException e)
-            {
-                Console.WriteLine("Out of Memory: {0}", e.Message);
-            }
+            result.Add(list.First()); //Gives OutOfMemoryException here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            list.RemoveAt(0);
         }
     }
 }
