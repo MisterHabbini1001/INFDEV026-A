@@ -11,82 +11,66 @@ namespace EntryPoint
 {
     public class MergeSortAlgorithm
     {
-        public List<Vector2> MergeSort<Vector2>(List<Vector2> unsortedList, Vector2 house) 
+        public List<Vector2> MergeSort(List<Vector2> unsortedList, Vector2 house) 
         {
-            List<Vector2> left, right;
-            int middle = unsortedList.Count / 2;
-
-            left = new List<Vector2>(middle);
-            right = new List<Vector2>(unsortedList.Count - middle);
-
             if (unsortedList.Count <= 1)
             {
                 return unsortedList;
             }
 
-            else
+            var left = new List<Vector2>(); 
+            var right = new List<Vector2>();
+
+            for (int i = 0; i < unsortedList.Count; i++)
             {
-                for (int i = 0; i < middle; i++)
+                if (i % 2 > 0)
                 {
-                    if (i > unsortedList.Count)
-                    {
-                        left[i] = unsortedList[i]; 
-                    }
+                    left.Add(unsortedList[i]);
                 }
-
-                for (int i = middle; i < unsortedList.Count; i++)   
+                else
                 {
-                    if (i > unsortedList.Count)
-                    {
-                        right[i - middle] = unsortedList[i];
-                    }
+                    right.Add(unsortedList[i]);
                 }
-
-                left = MergeSort(left, house);
-                right = MergeSort(right, house);
             }
 
-            return Merge<Vector2>(left, right);
+            left = MergeSort(left, house);
+            right = MergeSort(right, house);
+            
+            return Merge(left, right, house);
         }
 
-        public List<Vector2> Merge<Vector2>(List<Vector2> left, List<Vector2> right) 
+        public List<Vector2> Merge(List<Vector2> left, List<Vector2> right, Vector2 house) 
         {
-            List<Vector2> result = new List<Vector2>(left.Count + right.Count);
-            int currentElement = 0;
-            // Do something with Vector2.Distance here
+            var result = new List<Vector2>(left.Count + right.Count);
 
-            while (left.Count > 0 || right.Count > 0)
+            while (left.Count > 0 && right.Count > 0)
             {
-                if (left.Count > 0 && right.Count > 0)
+                if (Vector2.Distance(left.First(), house) <= Vector2.Distance(right.First(), house))
                 {
-                    if (left[0].Equals(right[0]))           
-                    {
-                        result[currentElement] = left[0];
-                        left = left.Skip(1).ToList();
-                        currentElement++;
-                    }
-                    else
-                    {
-                        result[currentElement] = right[0];
-                        right = right.Skip(1).ToList();
-                        currentElement++;
-                    }
+                    MoveValueToResult(left, result);
                 }
-                else if (left.Count > 0)
+                else
                 {
-                    result[currentElement] = left[0];
-                    left = left.Skip(1).ToList();
-                    currentElement++;
+                    MoveValueToResult(right, result);
                 }
-                else if (right.Count > 0)
+                
+                while (left.Count > 0)
                 {
-                    result[currentElement] = right[0];
-                    right = right.Skip(1).ToList();
-                    currentElement++;
+                    MoveValueToResult(left, result);
+                }
+                while (right.Count > 0)
+                {
+                    MoveValueToResult(right, result);
                 }
             }
 
             return result;
+        }
+
+        private static void MoveValueToResult(List<Vector2> list, List<Vector2> result)
+        {
+            result.Add(list.First());
+            list.RemoveAt(0);
         }
     }
 }

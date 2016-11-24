@@ -43,18 +43,9 @@ namespace EntryPoint
        MergeSortAlgorithm algorithm_stuff = new MergeSortAlgorithm();
        List<Vector2> unsorted_list = specialBuildings.ToList<Vector2>();
 
-       for (int i = 0; i < unsorted_list.Count; i++)
-       {
-         Console.WriteLine("Element " + i + " of unsorted list has value = " + unsorted_list.ElementAt(i));
-       }
 
-       IEnumerable<Vector2> sorted_list = algorithm_stuff.MergeSort<Vector2>(unsorted_list, house).AsEnumerable<Vector2>();
+       IEnumerable<Vector2> sorted_list = algorithm_stuff.MergeSort(unsorted_list, house).AsEnumerable<Vector2>();
        List<Vector2> sorted_list_two = sorted_list.ToList<Vector2>();
-
-       for (int j = 0; j < sorted_list_two.Count; j++)
-       {
-         Console.WriteLine("Element " + j + " of sorted list has value = " + sorted_list_two.ElementAt(j));
-       }
 
        return sorted_list;
        //return sorted_list.OrderBy(v => Vector2.Distance(v, house));
