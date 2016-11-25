@@ -15,40 +15,42 @@ namespace EntryPoint
         {
             if (unsortedList.Count <= 1) // In cases that list contains 0 or only 1 element
             {
-                return unsortedList;
+                return unsortedList.AsEnumerable<Vector2>(); // Converts unsortedList to IEnumerable first
             }
 
-            var left = new List<Vector2>(); 
-            var right = new List<Vector2>();
-
-            for (int i = 0; i < unsortedList.Count; i++)
+            else
             {
-                if (i % 2 > 0) // Checks 
-                {
-                    left.Add(unsortedList[i]);
-                }
-                else
-                {
-                    right.Add(unsortedList[i]);
-                }
-           }
+                var left = new List<Vector2>();
+                var right = new List<Vector2>();
 
-            left = MergeSort(left, house).ToList<Vector2>();
-            right = MergeSort(right, house).ToList<Vector2>();
+                for (int i = 0; i < unsortedList.Count; i++)
+                {
+                    if (i % 2 > 0) // Checks if modulus of i is bigger than 0. This means condition is only true when i is uneven, since modulus for uneven numbers is 1
+                    {
+                        left.Add(unsortedList.ElementAt(i)); // When i is UNEVEN  
+                    }
+                    else
+                    {
+                        right.Add(unsortedList.ElementAt(i)); // When i is EVEN   
+                    }
+                }
 
-            IEnumerable<Vector2> merge_result = Merge(left, right, house).AsEnumerable<Vector2>();
-            return merge_result;
+                left = MergeSort(left, house).ToList<Vector2>(); // Converts to IEnumerable first
+                right = MergeSort(right, house).ToList<Vector2>(); // Converts to IEnumerable first
+
+                return Merge(left, right, house);
+            }
         }
 
-        public static List<Vector2> Merge(List<Vector2> left, List<Vector2> right, Vector2 house) 
+        private static List<Vector2> Merge(List<Vector2> left, List<Vector2> right, Vector2 house) 
         {
             var result = new List<Vector2>();
 
-            while (left.Count() > 0 && right.Count() > 0)
+            while (left.Count() > 0 && right.Count() > 0) // Goes to this code block when RIGHT list contains NO ELEMENTS
             {
                 if (Vector2.Distance(left.First(), house) <= Vector2.Distance(right.First(), house))
                 {
-                    result.Add(left.First()); 
+                    result.Add(left.First());
                     left.RemoveAt(0);
                 }
                 else
@@ -58,10 +60,24 @@ namespace EntryPoint
                 }
             }
 
+            while (left.Count > 0) // Goes to this code block when RIGHT list contains NO ELEMENTS
+            {
+                result.Add(left.First());
+                left.RemoveAt(0);
+            }
+
+            while (right.Count > 0) // Goes to this code block when LEFT list contains NO ELEMENTS
+            {
+                result.Add(right.First());
+                right.RemoveAt(0);
+            }
+
             return result;
         }
     }
 }
+
+
 
 
 
