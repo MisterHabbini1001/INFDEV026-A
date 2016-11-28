@@ -20,8 +20,8 @@ namespace EntryPoint
 
             else
             {
-                var left = new List<Vector2>();
-                var right = new List<Vector2>();
+                var left = new List<Vector2>();  // 1st half of unsortedList
+                var right = new List<Vector2>(); // 2nd half of unsortedList
 
                 for (int i = 0; i < unsortedList.Count; i++)
                 {
@@ -35,44 +35,44 @@ namespace EntryPoint
                     }
                 }
 
-                left = MergeSort(left, house).ToList<Vector2>(); // Converts to IEnumerable first
-                right = MergeSort(right, house).ToList<Vector2>(); // Converts to IEnumerable first
+                left = MergeSort(left, house).ToList<Vector2>(); // Converts to List first for Merge function
+                right = MergeSort(right, house).ToList<Vector2>(); // Converts to List first for Merge function 
 
-                return Merge(left, right, house);
+                return Merge(left, right, house); // Returns result of Merge function
             }
         }
 
         private static List<Vector2> Merge(List<Vector2> left, List<Vector2> right, Vector2 house) 
         {
-            var result = new List<Vector2>();
+            var result = new List<Vector2>(); // List that is returned at the end of function
 
-            while (left.Count() > 0 && right.Count() > 0) // Goes to this code block when RIGHT list contains NO ELEMENTS
+            while (left.Count() > 0 && right.Count() > 0) // Goes to this code block when both LEFT and RIGHT list contain NO ELEMENTS
             {
-                if (Vector2.Distance(left.First(), house) <= Vector2.Distance(right.First(), house))
+                if (Vector2.Distance(left.First(), house) <= Vector2.Distance(right.First(), house)) // Compares distances of 1ST ELEMENT of both LEFT and RIGHT lists
                 {
-                    result.Add(left.First());
-                    left.RemoveAt(0);
+                    result.Add(left.First()); // Adds the 1st ELEMENT of left list to result list
+                    left.RemoveAt(0);         // Removes element of left list at index 0
                 }
                 else
                 {
-                    result.Add(right.First());
-                    right.RemoveAt(0);
+                    result.Add(right.First()); // Adds the 1st ELEMENT of right list to result list
+                    right.RemoveAt(0);         // Removes element of right list at index 0
                 }
             }
 
             while (left.Count > 0) // Goes to this code block when RIGHT list contains NO ELEMENTS
             {
-                result.Add(left.First());
-                left.RemoveAt(0);
+                result.Add(left.First()); // Adds the 1st ELEMENT of left list to result list
+                left.RemoveAt(0);         // Removes element of left list at index 0
             }
 
             while (right.Count > 0) // Goes to this code block when LEFT list contains NO ELEMENTS
             {
-                result.Add(right.First());
-                right.RemoveAt(0);
+                result.Add(right.First()); // Adds the 1st ELEMENT of right list to result list
+                right.RemoveAt(0);         // Removes element of left list at index 0
             }
 
-            return result;
+            return result; // Returns the final list
         }
     }
 }
