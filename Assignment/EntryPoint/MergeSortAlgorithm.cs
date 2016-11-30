@@ -70,6 +70,7 @@ namespace EntryPoint
             {
                 result.Add(right.First()); // Adds the 1st ELEMENT of right list to result list
                 right.RemoveAt(0);         // Removes element of left list at index 0
+
             }
 
             return result; // Returns the final list
