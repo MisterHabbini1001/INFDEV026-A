@@ -49,6 +49,11 @@ namespace EntryPoint
       IEnumerable<Vector2> specialBuildings, 
       IEnumerable<Tuple<Vector2, float>> housesAndDistances)
     {
+
+      List<Tuple<Vector2, float>> convert_list = housesAndDistances.ToList<Tuple<Vector2, float>>(); // Conversion to list
+      List<List<Vector2>> test_return = new List<List<Vector2>>();
+      // return test_return.AsEnumerable<IEnumerable<Vector2>>();   Works for function return type
+
       return
           from h in housesAndDistances
           select

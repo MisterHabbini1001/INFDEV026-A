@@ -45,6 +45,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BinaryTreeAlgorithm.cs" />
     <Compile Include="Functions stub implementations.cs" />
     <Compile Include="MergeSortAlgorithm.cs" />
     <Compile Include="Program.cs" />
