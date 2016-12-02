@@ -14,12 +14,12 @@ namespace EntryPoint
         public static IEnumerable<IEnumerable<Vector2>> InsertIntoBinaryTree(List<Vector2> specialBuildings, List<Tuple<Vector2, float>> houseandDistances)
         {
             BinaryTree b = new BinaryTree();
-
+                      
             for (int i = 0; i < specialBuildings.Count(); i++)
             {
                 b.Insert(specialBuildings.ElementAt(i));
             }
-
+            
             List<List<Vector2>> test_return = MakeListOfListOfPositions(b, specialBuildings, houseandDistances);
             IEnumerable<IEnumerable<Vector2>> list_of_list_of_positions = test_return.AsEnumerable<IEnumerable<Vector2>>();
 
@@ -29,20 +29,30 @@ namespace EntryPoint
         public static List<List<Vector2>> MakeListOfListOfPositions(BinaryTree bin_tree, List<Vector2> specialBuildings, List<Tuple<Vector2, float>> houseandDistances)
         {
            List<List<Vector2>> inception_list = new List<List<Vector2>>(); // Final result that should be returned
+
            List<Vector2> inter_result = new List<Vector2>();               // List that must be returned at the end of inner loop
 
             for (int j = 0; j < houseandDistances.Count(); j++)
             {
                 for (int k = 0; k < specialBuildings.Count(); k++)
                 {
-                    Vector2 v_result = bin_tree.Search(specialBuildings.ElementAt(k), houseandDistances.ElementAt(j));
-                    inter_result.Add(v_result);
+                    bool result = bin_tree.Search(specialBuildings.ElementAt(k));
+
+                    if (result)
+                    { 
+                        if (Vector2.Distance(houseandDistances.ElementAt(j).Item1, specialBuildings.ElementAt(k)) <= houseandDistances.ElementAt(j).Item2)
+                        {
+                            inter_result.Add(specialBuildings.ElementAt(k));
+                        }
+                    }                                     
                 }
 
+                Console.WriteLine("Amount of elements in inter_result " + inter_result.Count());
                 inception_list.Add(inter_result);
                 inter_result.RemoveRange(0, inter_result.Count());
             }
 
+            Console.WriteLine("Amount of elements in inception_list_result " + inception_list.Count());
             return inception_list;
         }
         
@@ -79,17 +89,25 @@ namespace EntryPoint
             count++; // Increments total amount of nodes in binary tree by 1
         }
 
-        public Vector2 Search(Vector2 sb_distance, Tuple<Vector2, float> house_and_max_distance) // Searches for node with certain value (= s) for Vector2
+        public bool Search(Vector2 sb_distance) // Searches for node with certain value (= s) for Vector2
         {
-            return root.SeekAndAdd(root, sb_distance, house_and_max_distance);
+            return root.Search(root, sb_distance);
         }
 
         public bool IsLeaf()
         {
             if (!IsEmpty())
+            {
                 return root.IsLeaf(ref root);
+            }
 
             return true;
+        }
+
+        public void Display()
+        {
+            if (!IsEmpty())
+                root.Display(root);
         }
 
         public int Count()
@@ -116,53 +134,60 @@ namespace EntryPoint
             return (node.rightLeaf == null && node.leftLeaf == null);
         }
 
-        public void InsertData(ref Node node, Vector2 data) // data is new value for special building vector
+        public void InsertData(ref Node node, Vector2 data) // data is new value for special building vector     ERROS MIGHT LAY HERE!!!!!!!!!!!!!!!!!!!!
         {
-            if (node == null)                                                    // If there is no root node available in the binary tree
+            if (node == null)                                                    
             {
                 node = new Node(data);
             }
-           
-            else if (node.sb_vector.X <= data.X && node.sb_vector.Y >= data.Y)  // Makes a RIGHTLEAF node 
-            {
-                InsertData(ref node.rightLeaf, data);
-            }
-           
-            else if (node.sb_vector.X >= data.X && node.sb_vector.Y <= data.Y)  // Makes a LEFTLEAF node 
+
+            else if (node.sb_vector.Length() >= data.Length())  // Makes a LEFTLEAF node 
             {
                 InsertData(ref node.leftLeaf, data);
             }
-       
+
+            else if (node.sb_vector.Length() < data.Length())  // Makes a RIGHTLEAF node 
+            {
+                InsertData(ref node.rightLeaf, data);
+            }       
         }
 
-        public Vector2 SeekAndAdd(Node node, Vector2 sb_distance, Tuple<Vector2, float> hamd) // hamd = house and maximum distance
+        public bool Search(Node node, Vector2 seeker) // hamd = house and maximum distance
         {
-            Vector2 null_result = new Vector2(0, 0); // Result with special buildings for house
-
             if (node == null)
             {
-                return null_result;
+                return false;
             }
 
-            else if (node.sb_vector == sb_distance)
+            else if (node.sb_vector == seeker)
             {
-                if (Vector2.Distance(hamd.Item1, node.sb_vector) <= hamd.Item2)
-                {
-                    return node.sb_vector;
-                    SeekAndAdd(node.rightLeaf, sb_distance, hamd);
-                }
-
-                else if (Vector2.Distance(hamd.Item1, node.sb_vector) > hamd.Item2)
-                {
-                    return SeekAndAdd(node.leftLeaf, sb_distance, hamd);
-                }
+                return true;
             }
 
-            return null_result;
+            else if (node.sb_vector.Length() > seeker.Length())
+            {
+                return Search(node.leftLeaf, seeker);
+            }
+
+            else if (node.sb_vector.Length() < seeker.Length())
+            {
+              return Search(node.rightLeaf, seeker);
+            }
+
+            return false; 
+        }
+
+        public void Display(Node n)
+        {
+            if (n == null)
+                return;
+
+            Display(n.leftLeaf);
+            Console.WriteLine(n.sb_vector);
+            Display(n.rightLeaf);
         }
     }
 }
-
 
 
 
