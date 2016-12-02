@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Text;
 
 namespace EntryPoint
 {
@@ -45,16 +47,14 @@ namespace EntryPoint
 
         //
 
-        private static IEnumerable<IEnumerable<Vector2>> FindSpecialBuildingsWithinDistanceFromHouse( // EXERCISE 2 - Trees  EXERCISE 2 - Trees  EXERCISE 2 - Trees  EXERCISE 2 - Trees !!!!!!!!
+    private static IEnumerable<IEnumerable<Vector2>> FindSpecialBuildingsWithinDistanceFromHouse( // EXERCISE 2 - Trees  EXERCISE 2 - Trees  EXERCISE 2 - Trees  EXERCISE 2 - Trees !!!!!!!!
       IEnumerable<Vector2> specialBuildings, 
       IEnumerable<Tuple<Vector2, float>> housesAndDistances)
     {
+      List<Vector2> convert_specialBuildings = specialBuildings.ToList<Vector2>();                   // Conversion to list for easier looping later (in my opinion)
+      List<Tuple<Vector2, float>> convert_list = housesAndDistances.ToList<Tuple<Vector2, float>>(); // Conversion to list for easier looping later (in my opinion)
 
-      List<Tuple<Vector2, float>> convert_list = housesAndDistances.ToList<Tuple<Vector2, float>>(); // Conversion to list
-      List<List<Vector2>> test_return = new List<List<Vector2>>();
-      return test_return.AsEnumerable<IEnumerable<Vector2>>();
-      //Works for function return type
-
+      return BinaryTreeAlgorithm.InsertIntoBinaryTree(convert_specialBuildings, convert_list); // Calls InsertIntoBinaryTree function in static BinaryTreeAlgorithm class                  
     }
 
     //

@@ -11,7 +11,7 @@ namespace EntryPoint
 {
     public class BinaryTreeAlgorithm
     {
-        public static void InsertIntoBinaryTree(List<Vector2> specialBuildings)
+        public static IEnumerable<IEnumerable<Vector2>> InsertIntoBinaryTree(List<Vector2> specialBuildings, List<Tuple<Vector2, float>> houseandDistances)
         {
             BinaryTree b = new BinaryTree();
 
@@ -20,20 +20,35 @@ namespace EntryPoint
                 b.Insert(specialBuildings.ElementAt(i));
             }
 
-            b.Display();
+            List<List<Vector2>> test_return = MakeListOfListOfPositions(b, specialBuildings, houseandDistances);
+            IEnumerable<IEnumerable<Vector2>> list_of_list_of_positions = test_return.AsEnumerable<IEnumerable<Vector2>>();
 
-            Console.ReadLine();
+            return list_of_list_of_positions;
         }
-
-        /*
-        public List<List<Vector2>>(BinaryTree bin_tree)
+       
+        public static List<List<Vector2>> MakeListOfListOfPositions(BinaryTree bin_tree, List<Vector2> specialBuildings, List<Tuple<Vector2, float>> houseandDistances)
         {
-           //
+           List<List<Vector2>> inception_list = new List<List<Vector2>>(); // Final result that should be returned
+           List<Vector2> inter_result = new List<Vector2>();               // List that must be returned at the end of inner loop
+
+            for (int j = 0; j < houseandDistances.Count(); j++)
+            {
+                for (int k = 0; k < specialBuildings.Count(); k++)
+                {
+                    Vector2 v_result = bin_tree.Search(specialBuildings.ElementAt(k), houseandDistances.ElementAt(j));
+                    inter_result.Add(v_result);
+                }
+
+                inception_list.Add(inter_result);
+                inter_result.RemoveRange(0, inter_result.Count());
+            }
+
+            return inception_list;
         }
-        */
+        
     }
 
-    class BinaryTree // Binaaaaaaaaaaaarrrrrrrrryyyy tree       // Change int to Vector2
+    public class BinaryTree // Binaaaaaaaaaaaarrrrrrrrryyyy tree       // Change int to Vector2
     {
         private Node root; // Root node of the binary tree
         private int count; // Amount of nodes inside the binary tree
@@ -64,9 +79,9 @@ namespace EntryPoint
             count++; // Increments total amount of nodes in binary tree by 1
         }
 
-        public bool Search(Vector2 s) // Searches for node with certain value (= s) for Vector2
+        public Vector2 Search(Vector2 sb_distance, Tuple<Vector2, float> house_and_max_distance) // Searches for node with certain value (= s) for Vector2
         {
-            return root.Search(root, s);
+            return root.SeekAndAdd(root, sb_distance, house_and_max_distance);
         }
 
         public bool IsLeaf()
@@ -77,21 +92,15 @@ namespace EntryPoint
             return true;
         }
 
-        public void Display()
-        {
-            if (!IsEmpty())
-                root.Display(root);
-        }
-
         public int Count()
         {
             return count;
         }
     }
 
-    class Node // Noooooooooooooooooooode class
+    public class Node // Noooooooooooooooooooode class
     {
-        private Vector2 sb_vector; // Vector2 for Special building value inside Node
+        public Vector2 sb_vector; // Vector2 for Special building value inside Node
         public Node rightLeaf;
         public Node leftLeaf;
 
@@ -107,213 +116,53 @@ namespace EntryPoint
             return (node.rightLeaf == null && node.leftLeaf == null);
         }
 
-        public void InsertData(ref Node node, Vector2 data)
+        public void InsertData(ref Node node, Vector2 data) // data is new value for special building vector
         {
-            if (node == null)
+            if (node == null)                                                    // If there is no root node available in the binary tree
             {
                 node = new Node(data);
             }
-
-            /*
-            else if (node.sb_vector < data)
+           
+            else if (node.sb_vector.X <= data.X && node.sb_vector.Y >= data.Y)  // Makes a RIGHTLEAF node 
             {
                 InsertData(ref node.rightLeaf, data);
             }
-            */
-
-            /*
-            else if (node.sb_vector > data)
+           
+            else if (node.sb_vector.X >= data.X && node.sb_vector.Y <= data.Y)  // Makes a LEFTLEAF node 
             {
                 InsertData(ref node.leftLeaf, data);
             }
-            */
+       
         }
 
-        public bool Search(Node node, Vector2 s)
+        public Vector2 SeekAndAdd(Node node, Vector2 sb_distance, Tuple<Vector2, float> hamd) // hamd = house and maximum distance
         {
+            Vector2 null_result = new Vector2(0, 0); // Result with special buildings for house
+
             if (node == null)
-                return false;
-
-            if (node.sb_vector == s)
             {
-                return true;
+                return null_result;
             }
 
-            /*
-            else if (node.sb_vector < s)
+            else if (node.sb_vector == sb_distance)
             {
-                return Search(node.rightLeaf, s);
+                if (Vector2.Distance(hamd.Item1, node.sb_vector) <= hamd.Item2)
+                {
+                    return node.sb_vector;
+                    SeekAndAdd(node.rightLeaf, sb_distance, hamd);
+                }
+
+                else if (Vector2.Distance(hamd.Item1, node.sb_vector) > hamd.Item2)
+                {
+                    return SeekAndAdd(node.leftLeaf, sb_distance, hamd);
+                }
             }
-            */
 
-            /*
-            else if (node.sb_vector > s)
-            {
-                return Search(node.leftLeaf, s);
-            }
-            */
-
-            return false;
-        }
-
-        public void Display(Node n)
-        {
-            if (n == null)
-                return;
-
-            Display(n.leftLeaf);
-            Console.Write(" " + n.sb_vector);
-            Display(n.rightLeaf);
+            return null_result;
         }
     }
 }
 
-/*
-public static class BinaryTreeAlgorithm
-    {
-        public static void InsertIntoBinaryTree(List<Vector2> specialBuildings)
-        {
-            BinaryTree b = new BinaryTree();
 
-            for (int i = 0; i < specialBuildings.Count(); i++)
-            {
-                b.Insert(specialBuildings.ElementAt(i));
-            }
 
-            b.Insert(1);
-            b.Insert(6);
-            b.Insert(2);
-            b.Insert(4);
-            b.Insert(5);
-            b.Insert(3);
 
-            b.Display();
-
-            Console.ReadLine();
-        }
-    }
-
-    class BinaryTree // Binaaaaaaaaaaaarrrrrrrrryyyy tree       // Change int to Vector2
-    {
-        private Node root;
-        private int count;
-
-        public BinaryTree()
-        {
-            root = null;
-            count = 0;
-        }
-
-        public bool IsEmpty()
-        {
-            return root == null;
-        }
-
-        public void Insert(int d)
-        {
-            if (IsEmpty())
-            {
-                root = new Node(d);
-            }
-            else
-            {
-                root.InsertData(ref root, d);
-            }
-
-            count++;
-        }
-
-        public bool Search(int s)
-        {
-            return root.Search(root, s);
-        }
-
-        public bool IsLeaf()
-        {
-            if (!IsEmpty())
-                return root.IsLeaf(ref root);
-
-            return true;
-        }
-
-        public void Display()
-        {
-            if (!IsEmpty())
-                root.Display(root);
-        }
-
-        public int Count()
-        {
-            return count;
-        }
-    }
-
-    class Node // Noooooooooooooooooooode class
-    {
-        private int sb_vector;
-        public Node rightLeaf;
-        public Node leftLeaf;
-
-        public Node(int value)
-        {
-            sb_vector = value;
-            rightLeaf = null;
-            leftLeaf = null;
-        }
-
-        public bool IsLeaf(ref Node node)
-        {
-            return (node.rightLeaf == null && node.leftLeaf == null);
-
-        }
-
-        public void InsertData(ref Node node, int data)
-        {
-            if (node == null)
-            {
-                node = new Node(data);
-
-            }
-            else if (node.sb_vector < data)
-            {
-                InsertData(ref node.rightLeaf, data);
-            }
-
-            else if (node.sb_vector > data)
-            {
-                InsertData(ref node.leftLeaf, data);
-            }
-        }
-
-        public bool Search(Node node, int s)
-        {
-            if (node == null)
-                return false;
-
-            if (node.sb_vector == s)
-            {
-                return true;
-            }
-            else if (node.sb_vector < s)
-            {
-                return Search(node.rightLeaf, s);
-            }
-            else if (node.sb_vector > s)
-            {
-                return Search(node.leftLeaf, s);
-            }
-
-            return false;
-        }
-
-        public void Display(Node n)
-        {
-            if (n == null)
-                return;
-
-            Display(n.leftLeaf);
-            Console.Write(" " + n.sb_vector);
-            Display(n.rightLeaf);
-        }
-    }
-*/
