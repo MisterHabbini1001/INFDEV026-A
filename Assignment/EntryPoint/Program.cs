@@ -54,7 +54,10 @@ namespace EntryPoint
       List<Vector2> convert_specialBuildings = specialBuildings.ToList<Vector2>();                   // Conversion to list for easier looping later (in my opinion)
       List<Tuple<Vector2, float>> convert_list = housesAndDistances.ToList<Tuple<Vector2, float>>(); // Conversion to list for easier looping later (in my opinion)
 
-      return BinaryTreeAlgorithm.InsertIntoBinaryTree(convert_specialBuildings, convert_list); // Calls InsertIntoBinaryTree function in static BinaryTreeAlgorithm class                  
+      IEnumerable<IEnumerable<Vector2>> nigga_list = BinaryTreeAlgorithm.InsertIntoBinaryTree(convert_specialBuildings, convert_list);
+      return nigga_list; // Calls InsertIntoBinaryTree function in static BinaryTreeAlgorithm class     
+            
+      // Giuseppe advies: Test elke functie apart (= oftewel unit testen).  Kijk ook of ik gewenste output krijg             
     }
 
     //

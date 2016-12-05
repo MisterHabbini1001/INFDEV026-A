@@ -21,7 +21,10 @@ namespace EntryPoint
             }
             
             List<List<Vector2>> test_return = MakeListOfListOfPositions(b, specialBuildings, houseandDistances);
+            Console.WriteLine("INSERT_INTO_BINARY_TREE : Amount of elements in test_return " + test_return.Count());
+
             IEnumerable<IEnumerable<Vector2>> list_of_list_of_positions = test_return.AsEnumerable<IEnumerable<Vector2>>();
+            Console.WriteLine("INSERT_INTO_BINARY_TREE : Amount of elements in list_of_list_of_positions " + list_of_list_of_positions.Count());
 
             return list_of_list_of_positions;
         }
@@ -47,9 +50,11 @@ namespace EntryPoint
                     }                                     
                 }
 
-                Console.WriteLine("Amount of elements in inter_result " + inter_result.Count());
+                Console.WriteLine("Amount of elements in inter_result BEFORE " + inter_result.Count());
                 inception_list.Add(inter_result);
                 inter_result.RemoveRange(0, inter_result.Count());
+
+                Console.WriteLine("Amount of elements in inter_result AFTER " + inter_result.Count());   // Always returns 0
             }
 
             Console.WriteLine("Amount of elements in inception_list_result " + inception_list.Count());
