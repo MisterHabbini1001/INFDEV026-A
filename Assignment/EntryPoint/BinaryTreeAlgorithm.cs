@@ -17,8 +17,11 @@ namespace EntryPoint
                       
             for (int i = 0; i < specialBuildings.Count(); i++)
             {
+                Console.WriteLine("Inserting into binary tree: specialBuilding at position " + i + " with value : " + specialBuildings.ElementAt(i));
                 b.Insert(specialBuildings.ElementAt(i));
             }
+
+            b.Display();
             
             List<List<Vector2>> test_return = MakeListOfListOfPositions(b, specialBuildings, houseandDistances);
             Console.WriteLine("INSERT_INTO_BINARY_TREE : Amount of elements in test_return " + test_return.Count());
