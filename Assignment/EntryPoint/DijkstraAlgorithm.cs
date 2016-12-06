@@ -11,8 +11,10 @@ namespace EntryPoint
     {
         public static IEnumerable<Tuple<Vector2, Vector2>> RoadDetermination(Vector2 startingBuilding, Vector2 destinationBuilding, List<Tuple<Vector2, Vector2>> roads)
         {
+            List<Tuple<Vector2, Vector2>> road_result = new List<Tuple<Vector2, Vector2>>();
+
             Tuple<Vector2, Vector2> starting_road;
-            List<Tuple<Vector2, Vector2>> road_result = new List<Tuple<Vector2, Vector2>>() { };
+            Tuple<Vector2, Vector2> destination_road;
 
             for (int i = 0; i < roads.Count(); i++)
             {
@@ -21,44 +23,12 @@ namespace EntryPoint
                     starting_road = new Tuple<Vector2, Vector2>(roads.ElementAt(i).Item1, roads.ElementAt(i).Item2);
                     road_result.Add(starting_road);
                 }
-            }
 
-            List<Vertex> vertices = new List<Vertex>();
-            Console.WriteLine("Length of vertices length BEFORE = " + vertices.Count());
-
-            for (int j = 0; j < roads.Count(); j++)
-            {
-               Vertex adder_zero_one;
-               Vertex adder_zero_two;
-
-               if (j == 0)
-               {
-                 adder_zero_one = new Vertex(roads.ElementAt(j).Item1);
-                 adder_zero_two = new Vertex(roads.ElementAt(j).Item2);
-                 vertices.Add(adder_zero_one);
-                 vertices.Add(adder_zero_two);
-               }
-
-               else
-               {
-                 for (int k = 0; k < vertices.Count(); k++)
-                 {
-                   if(roads.ElementAt(j).Item1 != vertices.ElementAt(k).vector)
-                   {
-                      adder_zero_one = new Vertex(roads.ElementAt(j).Item1);
-                      vertices.Add(adder_zero_one);
-                   }
-
-                  if (roads.ElementAt(j).Item2 != vertices.ElementAt(k).vector)
-                  {
-                      adder_zero_two = new Vertex(roads.ElementAt(j).Item2);
-                      vertices.Add(adder_zero_two);
-                  }
+                if (roads.ElementAt(i).Item2 == destinationBuilding)
+                {
+                    destination_road = new Tuple<Vector2, Vector2>(roads.ElementAt(i).Item1, roads.ElementAt(i).Item2);
                 }
-              }
             }
-
-            Console.WriteLine("Length of vertices length AFTER = " + vertices.Count());
 
             IEnumerable<Tuple<Vector2, Vector2>> on_the_road_again = road_result.AsEnumerable<Tuple<Vector2, Vector2>>();
             return on_the_road_again;
@@ -68,10 +38,12 @@ namespace EntryPoint
     public class Vertex  // Hoek van graph
     {
         public Vector2 vector;
+        public bool is_visited;
 
         public Vertex(Vector2 vector)
         {
             this.vector = vector;
+            this.is_visited = false;
         }
     }
 
@@ -81,11 +53,11 @@ namespace EntryPoint
         public Vertex vertex2;
         public float distance;
 
-        public Edge(Vertex vertex1, Vertex vertex2, float distance)
+        public Edge(Vertex vertex1, Vertex vertex2)
         {
             this.vertex1 = vertex1;
             this.vertex2 = vertex2;
-            this.distance = distance;
+            this.distance = Vector2.Distance(this.vertex1.vector, this.vertex2.vector);
         }
     }
 
