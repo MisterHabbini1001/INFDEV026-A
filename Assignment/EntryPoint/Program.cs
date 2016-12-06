@@ -51,12 +51,24 @@ namespace EntryPoint
       IEnumerable<Vector2> specialBuildings, 
       IEnumerable<Tuple<Vector2, float>> housesAndDistances)
     {
-      List<Vector2> convert_specialBuildings = specialBuildings.ToList<Vector2>();                   // Conversion to list for easier looping later (in my opinion)
-      List<Tuple<Vector2, float>> convert_list = housesAndDistances.ToList<Tuple<Vector2, float>>(); // Conversion to list for easier looping later (in my opinion)
+      IEnumerable<IEnumerable<Vector2>> test = BinaryTreeAlgorithm.InsertIntoBinaryTree(specialBuildings.ToList<Vector2>(), housesAndDistances.ToList<Tuple<Vector2, float>>());
+      Console.WriteLine("test in FindSpecialBuildingsWithin has total elements of: " + test.Count());
 
-      IEnumerable<IEnumerable<Vector2>> nigga_list = BinaryTreeAlgorithm.InsertIntoBinaryTree(convert_specialBuildings, convert_list);
-      return nigga_list; // Calls InsertIntoBinaryTree function in static BinaryTreeAlgorithm class     
-            
+      /*
+      for (int j = 0; j < test.Count(); j++)
+      {
+        IEnumerable<Vector2> current = test.ElementAt(j);
+        Console.WriteLine("current inside test at position j = " + j + " has total elements of: " + current.Count());
+
+        for (int k = 0; k < current.Count(); k++)
+        {
+          Console.WriteLine("j = " + j + " ,k = " + k + " has the Vector2 of: " + current.ElementAt(k));
+        }
+      }
+      */
+
+      return test;
+      // Calls InsertIntoBinaryTree function in static BinaryTreeAlgorithm class                
       // Giuseppe advies: Test elke functie apart (= oftewel unit testen).  Kijk ook of ik gewenste output krijg             
     }
 

@@ -17,53 +17,43 @@ namespace EntryPoint
                       
             for (int i = 0; i < specialBuildings.Count(); i++)
             {
-                Console.WriteLine("Inserting into binary tree: specialBuilding at position " + i + " with value : " + specialBuildings.ElementAt(i));
                 b.Insert(specialBuildings.ElementAt(i));
             }
 
-            b.Display();
+            // b.Display(); // Displays all elements in Binary tree
             
             List<List<Vector2>> test_return = MakeListOfListOfPositions(b, specialBuildings, houseandDistances);
-            Console.WriteLine("INSERT_INTO_BINARY_TREE : Amount of elements in test_return " + test_return.Count());
-
             IEnumerable<IEnumerable<Vector2>> list_of_list_of_positions = test_return.AsEnumerable<IEnumerable<Vector2>>();
-            Console.WriteLine("INSERT_INTO_BINARY_TREE : Amount of elements in list_of_list_of_positions " + list_of_list_of_positions.Count());
 
             return list_of_list_of_positions;
         }
        
-        public static List<List<Vector2>> MakeListOfListOfPositions(BinaryTree bin_tree, List<Vector2> specialBuildings, List<Tuple<Vector2, float>> houseandDistances)
+        public static List<List<Vector2>> MakeListOfListOfPositions(BinaryTree bin_tree, List<Vector2> specialBuildings, List<Tuple<Vector2, float>> houseandDistances) // Error lies in this function
         {
            List<List<Vector2>> inception_list = new List<List<Vector2>>(); // Final result that should be returned
-
            List<Vector2> inter_result = new List<Vector2>();               // List that must be returned at the end of inner loop
 
-            for (int j = 0; j < houseandDistances.Count(); j++)
-            {
-                for (int k = 0; k < specialBuildings.Count(); k++)
-                {
-                    bool result = bin_tree.Search(specialBuildings.ElementAt(k));
+           for (int j = 0; j < houseandDistances.Count(); j++)
+           {
+              for (int k = 0; k < specialBuildings.Count(); k++)
+              {
+                   bool result = bin_tree.Search(specialBuildings.ElementAt(k));
 
-                    if (result)
-                    { 
-                        if (Vector2.Distance(houseandDistances.ElementAt(j).Item1, specialBuildings.ElementAt(k)) <= houseandDistances.ElementAt(j).Item2)
-                        {
-                            inter_result.Add(specialBuildings.ElementAt(k));
-                        }
-                    }                                     
-                }
+                   if (result)
+                   { 
+                       if (Vector2.Distance(houseandDistances.ElementAt(j).Item1, specialBuildings.ElementAt(k)) <= houseandDistances.ElementAt(j).Item2)
+                       {
+                           inter_result.Add(specialBuildings.ElementAt(k));
+                       }
+                   }                                     
+              }
 
-                Console.WriteLine("Amount of elements in inter_result BEFORE " + inter_result.Count());
-                inception_list.Add(inter_result);
-                inter_result.RemoveRange(0, inter_result.Count());
+              inception_list.Add(inter_result);
+              //inter_result.RemoveRange(0, inter_result.Count());
+          }
 
-                Console.WriteLine("Amount of elements in inter_result AFTER " + inter_result.Count());   // Always returns 0
-            }
-
-            Console.WriteLine("Amount of elements in inception_list_result " + inception_list.Count());
-            return inception_list;
-        }
-        
+          return inception_list;
+       }        
     }
 
     public class BinaryTree // Binaaaaaaaaaaaarrrrrrrrryyyy tree       // Change int to Vector2
@@ -101,27 +91,6 @@ namespace EntryPoint
         {
             return root.Search(root, sb_distance);
         }
-
-        public bool IsLeaf()
-        {
-            if (!IsEmpty())
-            {
-                return root.IsLeaf(ref root);
-            }
-
-            return true;
-        }
-
-        public void Display()
-        {
-            if (!IsEmpty())
-                root.Display(root);
-        }
-
-        public int Count()
-        {
-            return count;
-        }
     }
 
     public class Node // Noooooooooooooooooooode class
@@ -135,11 +104,6 @@ namespace EntryPoint
             sb_vector = value;
             rightLeaf = null;
             leftLeaf = null;
-        }
-
-        public bool IsLeaf(ref Node node)
-        {
-            return (node.rightLeaf == null && node.leftLeaf == null);
         }
 
         public void InsertData(ref Node node, Vector2 data) // data is new value for special building vector     ERROS MIGHT LAY HERE!!!!!!!!!!!!!!!!!!!!
@@ -183,16 +147,6 @@ namespace EntryPoint
             }
 
             return false; 
-        }
-
-        public void Display(Node n)
-        {
-            if (n == null)
-                return;
-
-            Display(n.leftLeaf);
-            Console.WriteLine(n.sb_vector);
-            Display(n.rightLeaf);
         }
     }
 }
