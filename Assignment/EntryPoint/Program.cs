@@ -77,15 +77,15 @@ namespace EntryPoint
     private static IEnumerable<Tuple<Vector2, Vector2>> FindRoute(Vector2 startingBuilding, // EXERCISE 3 - Graphs  Option 1: Dijkstra  EXERCISE 3 - Graphs  Option 1: Dijkstra  EXERCISE 3 - Graphs  Option 1: Dijkstra !!!!!!!!!
       Vector2 destinationBuilding, IEnumerable<Tuple<Vector2, Vector2>> roads)
     {
-      var startingRoad = roads.Where(x => x.Item1.Equals(startingBuilding)).First();
-      List<Tuple<Vector2, Vector2>> fakeBestPath = new List<Tuple<Vector2, Vector2>>() { startingRoad };
-      var prevRoad = startingRoad;
-      for (int i = 0; i < 30; i++)
-      {
-        prevRoad = (roads.Where(x => x.Item1.Equals(prevRoad.Item2)).OrderBy(x => Vector2.Distance(x.Item2, destinationBuilding)).First());
-        fakeBestPath.Add(prevRoad);
-      }
-      return fakeBestPath;
+       List<Tuple<Vector2, Vector2>> new_roads = roads.ToList<Tuple<Vector2, Vector2>>();
+       // roads has a different size during each function execution
+
+       for (int i = 0; i < 20; i++)
+       {
+          Console.WriteLine("i = " + i + " , starting point = " + new_roads.ElementAt(i).Item1 + " end point = " + new_roads.ElementAt(i).Item2);
+       }
+
+       return DijkstraAlgorithm.RoadDetermination(startingBuilding, destinationBuilding, roads.ToList<Tuple<Vector2, Vector2>>());
     }
 
     //
