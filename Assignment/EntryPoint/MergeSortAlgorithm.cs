@@ -5,37 +5,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// Is meant for exercise 1 - Sorting
-
 namespace EntryPoint
 {
     public static class MergeSortAlgorithm
     {
         public static IEnumerable<Vector2> MergeSort(List<Vector2> unsortedList, Vector2 house) 
         {
-            if (unsortedList.Count <= 1) // In cases that list contains 0 or only 1 element
-            {
-                return unsortedList.AsEnumerable<Vector2>(); // Converts unsortedList to IEnumerable first
-            }
+            if (unsortedList.Count <= 1) { return unsortedList.AsEnumerable<Vector2>(); } // In case list has 1 or 0 elements
 
             else
             {
-                var left = new List<Vector2>();  // 1st half of unsortedList
+                var left  = new List<Vector2>();  // 1st half of unsortedList
                 var right = new List<Vector2>(); // 2nd half of unsortedList
 
                 for (int i = 0; i < unsortedList.Count; i++)
                 {
-                    if (i % 2 > 0) // Checks if modulus of i is bigger than 0. This means condition is only true when i is uneven, since modulus for uneven numbers is 1
-                    {
-                        left.Add(unsortedList.ElementAt(i)); // When i is UNEVEN  
-                    }
-                    else
-                    {
-                        right.Add(unsortedList.ElementAt(i)); // When i is EVEN   
-                    }
+                    if (i % 2 > 0) { left.Add(unsortedList.ElementAt(i)); }  // If i is UNEVEN (modulus always 1)
+                    else           { right.Add(unsortedList.ElementAt(i)); } // If i is EVEN (modulus always 0)
                 }
 
-                left = MergeSort(left, house).ToList<Vector2>(); // Converts to List first for Merge function
+                left  = MergeSort(left, house).ToList<Vector2>(); // Converts to List first for Merge function
                 right = MergeSort(right, house).ToList<Vector2>(); // Converts to List first for Merge function 
 
                 return Merge(left, right, house); // Returns result of Merge function
@@ -53,6 +42,7 @@ namespace EntryPoint
                     result.Add(left.First()); // Adds the 1st ELEMENT of left list to result list
                     left.RemoveAt(0);         // Removes element of left list at index 0
                 }
+
                 else
                 {
                     result.Add(right.First()); // Adds the 1st ELEMENT of right list to result list

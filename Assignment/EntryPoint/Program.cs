@@ -40,65 +40,31 @@ namespace EntryPoint
       goto read_input;
     }
 
-    private static IEnumerable<Vector2> SortSpecialBuildingsByDistance(Vector2 house, IEnumerable<Vector2> specialBuildings) // EXERCISE 1 - Sorting  EXERCISE 1 - Sorting  EXERCISE 1 - Sorting  !!!!!!
+    private static IEnumerable<Vector2> SortSpecialBuildingsByDistance(Vector2 house, IEnumerable<Vector2> specialBuildings) // EXERCISE 1 - Sorting  
     {
        return MergeSortAlgorithm.MergeSort(specialBuildings.ToList<Vector2>(), house); // Calls Mergesort function in static MergeSortAlgorithm class
     }
 
-        //
-
-    private static IEnumerable<IEnumerable<Vector2>> FindSpecialBuildingsWithinDistanceFromHouse( // EXERCISE 2 - Trees  EXERCISE 2 - Trees  EXERCISE 2 - Trees  EXERCISE 2 - Trees !!!!!!!!
-      IEnumerable<Vector2> specialBuildings, 
-      IEnumerable<Tuple<Vector2, float>> housesAndDistances)
+    private static IEnumerable<IEnumerable<Vector2>> FindSpecialBuildingsWithinDistanceFromHouse(IEnumerable<Vector2> specialBuildings, IEnumerable<Tuple<Vector2, float>> housesAndDistances) // EXERCISE 2 - Trees  
     {
-      IEnumerable<IEnumerable<Vector2>> test = BinaryTreeAlgorithm.InsertIntoBinaryTree(specialBuildings.ToList<Vector2>(), housesAndDistances.ToList<Tuple<Vector2, float>>());
-      Console.WriteLine("test in FindSpecialBuildingsWithin has total elements of: " + test.Count());
-
-      /*
-      for (int j = 0; j < test.Count(); j++)
-      {
-        IEnumerable<Vector2> current = test.ElementAt(j);
-        Console.WriteLine("current inside test at position j = " + j + " has total elements of: " + current.Count());
-
-        for (int k = 0; k < current.Count(); k++)
-        {
-          Console.WriteLine("j = " + j + " ,k = " + k + " has the Vector2 of: " + current.ElementAt(k));
-        }
-      }
-      */
-
-      return test;
-      // Calls InsertIntoBinaryTree function in static BinaryTreeAlgorithm class                
-      // Giuseppe advies: Test elke functie apart (= oftewel unit testen).  Kijk ook of ik gewenste output krijg             
+      return BinaryTreeAlgorithm.InsertIntoBinaryTree(specialBuildings.ToList<Vector2>(), housesAndDistances.ToList<Tuple<Vector2, float>>());
     }
 
-    //
-
-    private static IEnumerable<Tuple<Vector2, Vector2>> FindRoute(Vector2 startingBuilding, // EXERCISE 3 - Graphs  Option 1: Dijkstra  EXERCISE 3 - Graphs  Option 1: Dijkstra  EXERCISE 3 - Graphs  Option 1: Dijkstra !!!!!!!!!
-      Vector2 destinationBuilding, IEnumerable<Tuple<Vector2, Vector2>> roads)
+    private static IEnumerable<Tuple<Vector2, Vector2>> FindRoute(Vector2 startingBuilding, Vector2 destinationBuilding, IEnumerable<Tuple<Vector2, Vector2>> roads) // EXERCISE 3 - Graphs  Option 1: Dijkstra
     {
-       List<Tuple<Vector2, Vector2>> new_roads = roads.ToList<Tuple<Vector2, Vector2>>();
-       // roads has a different size during each function execution
-
-       for (int i = 0; i < 20; i++)
-       {
-          Console.WriteLine("i = " + i + " , starting point = " + new_roads.ElementAt(i).Item1 + " end point = " + new_roads.ElementAt(i).Item2);
-       }
-
        return DijkstraAlgorithm.RoadDetermination(startingBuilding, destinationBuilding, roads.ToList<Tuple<Vector2, Vector2>>());
     }
 
-    //
-
-    private static IEnumerable<IEnumerable<Tuple<Vector2, Vector2>>> FindRoutesToAll(Vector2 startingBuilding, // EXERCISE 3 - Graphs  Option 2: Floyd-Marshall  EXERCISE 3 - Graphs  Option 2: Floyd-Marshall  EXERCISE 3 - Graphs  Option 2: Floyd-Marshall !!!!!!!!!
-      IEnumerable<Vector2> destinationBuildings, IEnumerable<Tuple<Vector2, Vector2>> roads)
+    private static IEnumerable<IEnumerable<Tuple<Vector2, Vector2>>> FindRoutesToAll(Vector2 startingBuilding, IEnumerable<Vector2> destinationBuildings, IEnumerable<Tuple<Vector2, Vector2>> roads)
     {
       List<List<Tuple<Vector2, Vector2>>> result = new List<List<Tuple<Vector2, Vector2>>>();
+
       foreach (var d in destinationBuildings)
       {
         var startingRoad = roads.Where(x => x.Item1.Equals(startingBuilding)).First();
         List<Tuple<Vector2, Vector2>> fakeBestPath = new List<Tuple<Vector2, Vector2>>() { startingRoad };
         var prevRoad = startingRoad;
+
         for (int i = 0; i < 30; i++)
         {
           prevRoad = (roads.Where(x => x.Item1.Equals(prevRoad.Item2)).OrderBy(x => Vector2.Distance(x.Item2, d)).First());
@@ -112,21 +78,8 @@ namespace EntryPoint
 #endif
 }
 
-/*
-    private static IEnumerable<Vector2> SortSpecialBuildingsByDistance(Vector2 house, IEnumerable<Vector2> specialBuildings) // EXERCISE 1 - Sorting  EXERCISE 1 - Sorting  EXERCISE 1 - Sorting  !!!!!!
-    {
-       MergeSortAlgorithm algorithm_stuff = new MergeSortAlgorithm();
-       List<Vector2> unsorted_list = specialBuildings.ToList<Vector2>();
-       algorithm_stuff.MergeSort<System.IComparable<Vector2>>(unsorted_list);
-       IEnumerable<Vector2> sorted_list = algorithm_stuff.MergeSort<System.IComparable<Vector2>>(unsorted_list).AsEnumerable<Vector2>();
-       return sorted_list;
-       //return specialBuildings.OrderBy(v => Vector2.Distance(v, house));
 
-       // STEP 1: Converteren naar List<T>
-       // STEP 2: Maak Sort functie aan   die zichzelf aanroopt  recursive    Checken of list 1 element heeft vooraf, anders infinite recursive zooi
-       // STEP 3: Maak Merge functie aan  die zichzelf NIET aanroept want statisch   Krijgt 2 lijsten binnen   Wordt aangeroepen door Sort
-    }
-*/
+
 
 
 

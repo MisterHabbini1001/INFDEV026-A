@@ -9,91 +9,144 @@ namespace EntryPoint
 {
     public static class DijkstraAlgorithm
     {
-        public static IEnumerable<Tuple<Vector2, Vector2>> RoadDetermination(Vector2 startingBuilding, Vector2 destinationBuilding, List<Tuple<Vector2, Vector2>> roads)
+        public static IEnumerable<Tuple<Vector2, Vector2>> RoadDetermination(Vector2 startingBuilding, Vector2 destinationBuilding, List<Tuple<Vector2, Vector2>> roads) 
         {
-            List<Tuple<Vector2, Vector2>> road_result = new List<Tuple<Vector2, Vector2>>();
+            Graph graph = new Graph();
+            graph = insertGraph(graph, roads, startingBuilding, destinationBuilding);
 
-            Tuple<Vector2, Vector2> starting_road;
-            Tuple<Vector2, Vector2> destination_road;
+            List<Tuple<Vector2, Vector2>> resultListBA = new List<Tuple<Vector2, Vector2>>();
+            resultListBA = graph.ShortestPath(startingBuilding, destinationBuilding);
 
-            for (int i = 0; i < roads.Count(); i++)
+            List<Tuple<Vector2, Vector2>> resultListAB = new List<Tuple<Vector2, Vector2>>();
+
+            while (resultListBA.Count > 0)
             {
-                if(roads.ElementAt(i).Item1 == startingBuilding)
+                resultListAB.Add(resultListBA[resultListBA.Count - 1]);
+                resultListBA.RemoveAt(resultListBA.Count - 1);
+            }
+
+            return resultListAB;
+        } 
+
+        private static List<Tuple<Vector2, Vector2>> createPaths(List<Vector2> nodes)
+        {
+            List<Tuple<Vector2, Vector2>> result = new List<Tuple<Vector2, Vector2>>();
+
+            for (int i = 0; i < nodes.Count(); i++) { result.Add(new Tuple<Vector2, Vector2>(nodes[i], nodes[i + 1])); }
+
+            return result;
+        } 
+
+        private static Graph insertGraph(Graph graph, List<Tuple<Vector2, Vector2>> roadslist, Vector2 startPoint, Vector2 endPoint)
+        {
+            graph.AddNode(startPoint);
+
+            for (int i = 0; i < roadslist.Count(); i++)
+            {
+                Vector2 firstpoint = roadslist[i].Item1;
+                Vector2 secondpoint = roadslist[i].Item2;
+                graph.AddNode(firstpoint);
+                graph.AddNode(secondpoint);
+            }
+
+            graph.AddNode(endPoint);
+
+            for (int i = 0; i < roadslist.Count(); i++)
+            {
+                Vector2 firstVector = roadslist[i].Item1;
+                Vector2 secondVector = roadslist[i].Item2;
+                int distance = calculateDistance(firstVector, secondVector);
+
+                graph.AddRoad(firstVector, secondVector, distance);
+
+            }
+
+            return graph;
+        } 
+
+        private static int calculateDistance(Vector2 beginpoint, Vector2 endpoint)
+        {
+            int result;
+            float floatResult;
+            floatResult = Vector2.Distance(beginpoint, endpoint);
+            result = (int)floatResult;
+
+            return result;
+        } 
+    } 
+
+    class Graph
+    {
+        Dictionary<Vector2, Dictionary<Vector2, int>> vertices = new Dictionary<Vector2, Dictionary<Vector2, int>>();
+
+        public void AddNode(Vector2 location)
+        {
+            if (!vertices.ContainsKey(location))
+            {
+                Dictionary<Vector2, int> emptyRoadsList = new Dictionary<Vector2, int>();
+                vertices[location] = emptyRoadsList;
+            }
+        }
+
+        public void AddRoad(Vector2 roadpoint1, Vector2 roadpoint2, int length)
+        {
+            if (!vertices[roadpoint1].ContainsKey(roadpoint2)) { vertices[roadpoint1].Add(roadpoint2, length); }
+            if (!vertices[roadpoint2].ContainsKey(roadpoint1)) { vertices[roadpoint2].Add(roadpoint1, length); }
+        }
+
+        public Dictionary<Vector2, Dictionary<Vector2, int>> getVertices() { return vertices; }
+
+        public List<Tuple<Vector2, Vector2>> ShortestPath(Vector2 startPoint, Vector2 endPoint)
+        {
+            var previous = new Dictionary<Vector2, Vector2>();
+            var distances = new Dictionary<Vector2, int>();
+            var nodes = new List<Vector2>();
+
+            List<Tuple<Vector2, Vector2>> path = null;
+
+            foreach (var node in vertices)
+            {
+                if (node.Key == startPoint) { distances[node.Key] = 0; }
+                else { distances[node.Key] = int.MaxValue; }
+
+                nodes.Add(node.Key);
+            }
+
+            while (nodes.Count != 0)
+            {
+                nodes.Sort((x, y) => distances[x] - distances[y]);
+                var smallest = nodes[0];
+                nodes.Remove(smallest);
+
+                if (smallest == endPoint)
                 {
-                    starting_road = new Tuple<Vector2, Vector2>(roads.ElementAt(i).Item1, roads.ElementAt(i).Item2);
-                    road_result.Add(starting_road);
+                    path = new List<Tuple<Vector2, Vector2>>();
+                    while (previous.ContainsKey(smallest))
+                    {
+                        Tuple<Vector2, Vector2> pair;
+                        pair = new Tuple<Vector2, Vector2>(smallest, previous[smallest]);
+                        path.Add(pair);
+                        smallest = previous[smallest];
+                    }
+                    break;
                 }
 
-                if (roads.ElementAt(i).Item2 == destinationBuilding)
+                if (distances[smallest] == int.MaxValue) { break; }
+
+                foreach (var neighbor in vertices[smallest])
                 {
-                    destination_road = new Tuple<Vector2, Vector2>(roads.ElementAt(i).Item1, roads.ElementAt(i).Item2);
+                    var totalDistance = distances[smallest] + neighbor.Value;
+                    if (totalDistance < distances[neighbor.Key])
+                    {
+                        distances[neighbor.Key] = totalDistance;
+                        previous[neighbor.Key] = smallest;
+                    }
                 }
             }
 
-            IEnumerable<Tuple<Vector2, Vector2>> on_the_road_again = road_result.AsEnumerable<Tuple<Vector2, Vector2>>();
-            return on_the_road_again;
-        }
-    }
-
-    public class Vertex  // Hoek van graph
-    {
-        public Vector2 vector;
-        public bool is_visited;
-
-        public Vertex(Vector2 vector)
-        {
-            this.vector = vector;
-            this.is_visited = false;
-        }
-    }
-
-    public class Edge
-    {
-        public Vertex vertex1;
-        public Vertex vertex2;
-        public float distance;
-
-        public Edge(Vertex vertex1, Vertex vertex2)
-        {
-            this.vertex1 = vertex1;
-            this.vertex2 = vertex2;
-            this.distance = Vector2.Distance(this.vertex1.vector, this.vertex2.vector);
-        }
-    }
-
-    public class DiGraph
-    {
-        public List<Vertex> vertices;
-        public List<Edge> edges;
-
-        public DiGraph()
-        {
-            vertices = new List<Vertex>();
-            edges = new List<Edge>();
-        }
-
-        public void ExecuteDijkstra()
-        {
-          
-        }
-    }
-
-    public class AdjacencyMatrix
-    {
-        public DiGraph directional_graph;
-
-        public AdjacencyMatrix()
-        {
-            directional_graph = new DiGraph();
-        }
-
-        public void Create()
-        {
-
+            return path;
         }
     }
 }
 
-/*
-GOAL: Build adjacency matrix using starting point and endpoint of road sections
-*/
+

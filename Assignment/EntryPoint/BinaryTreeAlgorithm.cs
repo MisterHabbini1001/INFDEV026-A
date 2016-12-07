@@ -5,8 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// Is meant for exercise 2 - Trees
-
 namespace EntryPoint
 {
     public class BinaryTreeAlgorithm
@@ -15,12 +13,7 @@ namespace EntryPoint
         {
             BinaryTree b = new BinaryTree();
                       
-            for (int i = 0; i < specialBuildings.Count(); i++)
-            {
-                b.Insert(specialBuildings.ElementAt(i));
-            }
-
-            // b.Display(); // Displays all elements in Binary tree
+            for (int i = 0; i < specialBuildings.Count(); i++) { b.Insert(specialBuildings.ElementAt(i)); }
             
             List<List<Vector2>> test_return = MakeListOfListOfPositions(b, specialBuildings, houseandDistances);
             IEnumerable<IEnumerable<Vector2>> list_of_list_of_positions = test_return.AsEnumerable<IEnumerable<Vector2>>();
@@ -28,7 +21,7 @@ namespace EntryPoint
             return list_of_list_of_positions;
         }
        
-        public static List<List<Vector2>> MakeListOfListOfPositions(BinaryTree bin_tree, List<Vector2> specialBuildings, List<Tuple<Vector2, float>> houseandDistances) // Error lies in this function
+        public static List<List<Vector2>> MakeListOfListOfPositions(BinaryTree bin_tree, List<Vector2> specialBuildings, List<Tuple<Vector2, float>> houseandDistances) 
         {
            List<List<Vector2>> inception_list = new List<List<Vector2>>(); // Final result that should be returned
            List<Vector2> inter_result = new List<Vector2>();               // List that must be returned at the end of inner loop
@@ -49,17 +42,17 @@ namespace EntryPoint
               }
 
               inception_list.Add(inter_result);
-              //inter_result.RemoveRange(0, inter_result.Count());
+              //inter_result.RemoveRange(0, inter_result.Count());   Fixed the exercise: no unit tests whatso ever
           }
 
           return inception_list;
        }        
     }
 
-    public class BinaryTree // Binaaaaaaaaaaaarrrrrrrrryyyy tree       // Change int to Vector2
+    public class BinaryTree 
     {
-        private Node root; // Root node of the binary tree
-        private int count; // Amount of nodes inside the binary tree
+        private Node root; 
+        private int count; 
 
         public BinaryTree()
         {
@@ -67,35 +60,22 @@ namespace EntryPoint
             count = 0;
         }
 
-        public bool IsEmpty() // Checks if BinaryTree is empty by checking if root is null
+        public bool IsEmpty() { return root == null; }
+
+        public void Insert(Vector2 d) 
         {
-            return root == null;
+            if (IsEmpty()) { root = new Node(d); }
+            else           { root.InsertData(ref root, d); }
+
+            count++; 
         }
 
-        public void Insert(Vector2 d) // Inserts a new node inside the binary tree with a certain value (= d) for Vector2
-        {
-            if (IsEmpty()) // If root node is equal to null (root node is empty)
-            {
-                root = new Node(d); // Creates new root node with value for d
-            }
-
-            else // If root node is not empty
-            {
-                root.InsertData(ref root, d); // root refers to root variable on line 31 - Inserts in root new vector2 for value
-            }
-
-            count++; // Increments total amount of nodes in binary tree by 1
-        }
-
-        public bool Search(Vector2 sb_distance) // Searches for node with certain value (= s) for Vector2
-        {
-            return root.Search(root, sb_distance);
-        }
+        public bool Search(Vector2 sb_distance) { return root.Search(root, sb_distance); }
     }
 
-    public class Node // Noooooooooooooooooooode class
+    public class Node 
     {
-        public Vector2 sb_vector; // Vector2 for Special building value inside Node
+        public Vector2 sb_vector; 
         public Node rightLeaf;
         public Node leftLeaf;
 
@@ -106,45 +86,21 @@ namespace EntryPoint
             leftLeaf = null;
         }
 
-        public void InsertData(ref Node node, Vector2 data) // data is new value for special building vector     ERROS MIGHT LAY HERE!!!!!!!!!!!!!!!!!!!!
+        public void InsertData(ref Node node, Vector2 data) 
         {
-            if (node == null)                                                    
-            {
-                node = new Node(data);
-            }
+            if (node == null) { node = new Node(data); }
 
-            else if (node.sb_vector.Length() >= data.Length())  // Makes a LEFTLEAF node 
-            {
-                InsertData(ref node.leftLeaf, data);
-            }
-
-            else if (node.sb_vector.Length() < data.Length())  // Makes a RIGHTLEAF node 
-            {
-                InsertData(ref node.rightLeaf, data);
-            }       
+            else if (node.sb_vector.Length() >= data.Length()) { InsertData(ref node.leftLeaf, data); }
+            else if (node.sb_vector.Length() < data.Length())  { InsertData(ref node.rightLeaf, data); }       
         }
 
-        public bool Search(Node node, Vector2 seeker) // hamd = house and maximum distance
+        public bool Search(Node node, Vector2 seeker) 
         {
-            if (node == null)
-            {
-                return false;
-            }
+            if (node == null) { return false; }
 
-            else if (node.sb_vector == seeker)
-            {
-                return true;
-            }
-
-            else if (node.sb_vector.Length() > seeker.Length())
-            {
-                return Search(node.leftLeaf, seeker);
-            }
-
-            else if (node.sb_vector.Length() < seeker.Length())
-            {
-              return Search(node.rightLeaf, seeker);
-            }
+            else if (node.sb_vector == seeker) { return true; }
+            else if (node.sb_vector.Length() > seeker.Length()) { return Search(node.leftLeaf, seeker); }
+            else if (node.sb_vector.Length() < seeker.Length()) { return Search(node.rightLeaf, seeker); }
 
             return false; 
         }
