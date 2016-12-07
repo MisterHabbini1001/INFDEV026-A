@@ -47,12 +47,12 @@ namespace EntryPoint
 
     private static IEnumerable<IEnumerable<Vector2>> FindSpecialBuildingsWithinDistanceFromHouse(IEnumerable<Vector2> specialBuildings, IEnumerable<Tuple<Vector2, float>> housesAndDistances) // EXERCISE 2 - Trees  
     {
-      return BinaryTreeAlgorithm.InsertIntoBinaryTree(specialBuildings.ToList<Vector2>(), housesAndDistances.ToList<Tuple<Vector2, float>>());
+       return BinaryTreeAlgorithm.CreateInceptionList(specialBuildings.ToList<Vector2>(), housesAndDistances.ToList<Tuple<Vector2, float>>()); // Calls CreateInceptionList function in static BinaryTreeAlgorithm class
     }
 
     private static IEnumerable<Tuple<Vector2, Vector2>> FindRoute(Vector2 startingBuilding, Vector2 destinationBuilding, IEnumerable<Tuple<Vector2, Vector2>> roads) // EXERCISE 3 - Graphs  Option 1: Dijkstra
     {
-       return DijkstraAlgorithm.RoadDetermination(startingBuilding, destinationBuilding, roads.ToList<Tuple<Vector2, Vector2>>());
+       return DijkstraAlgorithm.RoadDetermination(startingBuilding, destinationBuilding, roads.ToList<Tuple<Vector2, Vector2>>()); // Calls RoadDetermination function in static DijkstraAlgorithm class
     }
 
     private static IEnumerable<IEnumerable<Tuple<Vector2, Vector2>>> FindRoutesToAll(Vector2 startingBuilding, IEnumerable<Vector2> destinationBuildings, IEnumerable<Tuple<Vector2, Vector2>> roads)

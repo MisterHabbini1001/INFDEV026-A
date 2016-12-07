@@ -11,17 +11,29 @@ namespace EntryPoint
     {
         public static IEnumerable<Vector2> MergeSort(List<Vector2> unsortedList, Vector2 house) 
         {
-            if (unsortedList.Count <= 1) { return unsortedList.AsEnumerable<Vector2>(); } // In case list has 1 or 0 elements
+            if (unsortedList.Count <= 1) // In case list has 1 or 0 elements
+            {
+              return unsortedList.AsEnumerable<Vector2>();
+            } 
 
             else
             {
-                var left  = new List<Vector2>();  // 1st half of unsortedList
-                var right = new List<Vector2>(); // 2nd half of unsortedList
+                List<Vector2> left  = new List<Vector2>();  // 1st half of unsortedList
+                List<Vector2> right = new List<Vector2>(); // 2nd half of unsortedList
 
                 for (int i = 0; i < unsortedList.Count; i++)
                 {
-                    if (i % 2 > 0) { left.Add(unsortedList.ElementAt(i)); }  // If i is UNEVEN (modulus always 1)
-                    else           { right.Add(unsortedList.ElementAt(i)); } // If i is EVEN (modulus always 0)
+                    Vector2 current_special_building = unsortedList.ElementAt(i); // Special building in unsorted list with index i
+
+                    if (i % 2 > 0) // If i is UNEVEN (modulus always 1)
+                    {
+                       left.Add(current_special_building); // Adds element to left list
+                    }
+
+                    else // If i is EVEN (modulus always 0)
+                    {
+                      right.Add(current_special_building); // Adds element to right list
+                    } 
                 }
 
                 left  = MergeSort(left, house).ToList<Vector2>(); // Converts to List first for Merge function
@@ -33,7 +45,7 @@ namespace EntryPoint
 
         private static List<Vector2> Merge(List<Vector2> left, List<Vector2> right, Vector2 house) 
         {
-            var result = new List<Vector2>(); // List that is returned at the end of function
+            List<Vector2> result = new List<Vector2>(); // List that is returned at the end of function
 
             while (left.Count() > 0 && right.Count() > 0) // Goes to this code block when both LEFT and RIGHT list contain NO ELEMENTS
             {
@@ -67,6 +79,9 @@ namespace EntryPoint
         }
     }
 }
+
+
+
 
 
 
