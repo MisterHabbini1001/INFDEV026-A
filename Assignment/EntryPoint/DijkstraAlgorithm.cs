@@ -15,11 +15,9 @@ namespace EntryPoint
             graph = InsertGraph(graph, roads, startingBuilding, destinationBuilding); // Graph gets created here
 
             List<Tuple<Vector2, Vector2>> resultListBA = new List<Tuple<Vector2, Vector2>>();
-            resultListBA = graph.ShortestPath(startingBuilding, destinationBuilding); // Shortest path is determined between startingBuilding and destinationBuilding
-                                                                                      // It is then stored in the resultListBa variable
+            resultListBA = graph.ShortestPath(startingBuilding, destinationBuilding); // Shortest path is determined between startingBuilding and destinationBuilding: is then stored in resultListBA variable
 
             List<Tuple<Vector2, Vector2>> resultListAB = new List<Tuple<Vector2, Vector2>>(); // End result that should be returned
-
             while (resultListBA.Count > 0)
             {
                 resultListAB.Add(resultListBA[resultListBA.Count - 1]); // Adds all elements from resultListBA to resultListAB. It goes from the LAST till the FIRST element of the list
@@ -33,16 +31,11 @@ namespace EntryPoint
         {
             graph.AddNode(startPoint); // Adds startingBuilding as FIRST NODE to the graph
 
-            for (int i = 0; i < roadslist.Count(); i++)
+            foreach (var road in roadslist)
             {
-                Vector2 firstpoint = roadslist[i].Item1;  // Item1 is STARTING POINT of ROAD
-                graph.AddNode(firstpoint);
-
-                Vector2 secondpoint = roadslist[i].Item2; // Item2 is END POINT of ROAD
-                graph.AddNode(secondpoint);
-
-                int distance = (int)Vector2.Distance(firstpoint, secondpoint); // Calculates the distance between the 2 points
-                graph.AddRoad(firstpoint, secondpoint, distance);
+                graph.AddNode(road.Item1); // Item1 is STARTING POINT of ROAD
+                graph.AddNode(road.Item2); // Item2 is END POINT of ROAD
+                graph.AddRoad(road.Item1, road.Item2, (int)Vector2.Distance(road.Item1, road.Item2)); // Calculates the distance between the 2 points. Adds road to the graph
             }
 
             graph.AddNode(endPoint); // Adds destinationBuilding as LAST NODE to the graph
@@ -148,10 +141,39 @@ namespace EntryPoint
             }
 
             return path;
-            // Dictionary<Vector2, Dictionary<Vector2, int>> vertices = new Dictionary<Vector2, Dictionary<Vector2, int>>();
         }
     }
 }
+
+/*
+        private static Graph InsertGraph(Graph graph, List<Tuple<Vector2, Vector2>> roadslist, Vector2 startPoint, Vector2 endPoint)
+        {
+            graph.AddNode(startPoint); // Adds startingBuilding as FIRST NODE to the graph
+
+            for (int i = 0; i < roadslist.Count(); i++)
+            {
+                Vector2 firstpoint = roadslist[i].Item1;  // Item1 is STARTING POINT of ROAD
+                graph.AddNode(firstpoint);
+
+                Vector2 secondpoint = roadslist[i].Item2; // Item2 is END POINT of ROAD
+                graph.AddNode(secondpoint);
+
+                int distance = (int)Vector2.Distance(firstpoint, secondpoint); // Calculates the distance between the 2 points
+                graph.AddRoad(firstpoint, secondpoint, distance);
+            }
+
+            graph.AddNode(endPoint); // Adds destinationBuilding as LAST NODE to the graph
+            return graph;
+        } 
+        // WORKING VERSION FUNCTION
+*/
+
+/*
+                foreach (var neighbor in vertices[smallest]) 
+                {
+
+                }
+*/
 
 
 
