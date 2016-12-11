@@ -47,11 +47,6 @@ namespace EntryPoint
     {
         Dictionary<Vector2, Dictionary<Vector2, int>> vertices = new Dictionary<Vector2, Dictionary<Vector2, int>>();
 
-        public Dictionary<Vector2, Dictionary<Vector2, int>> getVertices() // This function returns the value for the vertices variable, since it is a private variable in the Graph class
-        {
-            return vertices;
-        }
-
         public void AddNode(Vector2 location)
         {
             if (!vertices.ContainsKey(location)) // Checks if the vertices dictionary contains a key with the value given for location. 
@@ -79,8 +74,8 @@ namespace EntryPoint
 
         public List<Tuple<Vector2, Vector2>> ShortestPath(Vector2 startPoint, Vector2 endPoint)
         {
-            var previous = new Dictionary<Vector2, Vector2>();
-            var distances = new Dictionary<Vector2, int>();
+            Dictionary<Vector2, Vector2> previous = new Dictionary<Vector2, Vector2>();
+            Dictionary<Vector2, int> distances = new Dictionary<Vector2, int>();
             List<Vector2> nodes = new List<Vector2>();
 
             List<Tuple<Vector2, Vector2>> path = null; // Resulting shortest path is empty in the beginning (stating the obvious here). 
@@ -104,7 +99,7 @@ namespace EntryPoint
 
             while (nodes.Count > 0)
             {
-                nodes.Sort((x, y) => distances[x] - distances[y]);
+                nodes.Sort((x, y) => distances[x] - distances[y]); // Substracting int values for x and y keys of distances dictionary. x and y are both vectors. Comparison is distance
                 var smallest = nodes[0]; // Selects the first element of the nodes list
                 nodes.Remove(smallest); // Removes the smallest node from the nodes list. In other words, the 1st element of the list will always be removed
 
@@ -120,53 +115,30 @@ namespace EntryPoint
                         smallest = previous[smallest];
                     }
 
-                    break;
+                    break; // Breaks the while loop with (previous.ContainsKey(smallest)). After that, the value for the path variable will be returned
                 }
 
                 if (distances[smallest] == int.MaxValue)
                 {
-                  break;
+                  break; // Breaks the big while loop (with nodes.Count > 0)
                 }
 
                 foreach (var neighbor in vertices[smallest]) // Goes through each Dictionary value for the key (with value smallest) in vertices dictionary
                 {
-                    var totalDistance = distances[smallest] + neighbor.Value;
+                    var totalDistance = distances[smallest] + neighbor.Value; // Calculate distance through each unvisited neightbor
 
-                    if (totalDistance < distances[neighbor.Key])
+                    if (totalDistance < distances[neighbor.Key]) // Update the neighbor's distance if smaller
                     {
-                        distances[neighbor.Key] = totalDistance;
+                        distances[neighbor.Key] = totalDistance; // Update the neighbor's distance if smaller
                         previous[neighbor.Key] = smallest;
                     }
                 }
-            }
+           }
 
-            return path;
+           return path;
         }
     }
 }
-
-/*
-        private static Graph InsertGraph(Graph graph, List<Tuple<Vector2, Vector2>> roadslist, Vector2 startPoint, Vector2 endPoint)
-        {
-            graph.AddNode(startPoint); // Adds startingBuilding as FIRST NODE to the graph
-
-            for (int i = 0; i < roadslist.Count(); i++)
-            {
-                Vector2 firstpoint = roadslist[i].Item1;  // Item1 is STARTING POINT of ROAD
-                graph.AddNode(firstpoint);
-
-                Vector2 secondpoint = roadslist[i].Item2; // Item2 is END POINT of ROAD
-                graph.AddNode(secondpoint);
-
-                int distance = (int)Vector2.Distance(firstpoint, secondpoint); // Calculates the distance between the 2 points
-                graph.AddRoad(firstpoint, secondpoint, distance);
-            }
-
-            graph.AddNode(endPoint); // Adds destinationBuilding as LAST NODE to the graph
-            return graph;
-        } 
-        // WORKING VERSION FUNCTION
-*/
 
 /*
 MAIN STEPS OF DIJKSTRA ALGORITHM:
