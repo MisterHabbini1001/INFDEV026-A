@@ -13,7 +13,7 @@ namespace EntryPoint
         {
             BinaryTree binary_tree = new BinaryTree();  // Creates Binary Tree with an empty root
 
-            foreach (Vector2 special_building in specialBuildings)
+            foreach (var special_building in specialBuildings)
             {
                 binary_tree.Insert(special_building);                     // Inserts the current building into the Binary Tree
             }
@@ -21,11 +21,11 @@ namespace EntryPoint
             List<List<Vector2>> inception_list = new List<List<Vector2>>(); // Final result that must be returned at the end of the function
             List<Vector2> inter_result = new List<Vector2>();               // Intermediate result that must be returned at the end of each inner loop
 
-            foreach (Tuple<Vector2, float> current in houseandDistances) 
+            foreach (var current in houseandDistances) // Loops through each Tuple<Vector2, float> element of houseandDistances
             {
-                foreach (Vector2 special_building in specialBuildings) 
+                foreach (var special_building in specialBuildings) // Loops through Vector2 element of specialBuildings
                 {
-                    bool tree_search_result = binary_tree.Search(special_building);            // Searches the current special building in the binary tree. Returns true if found and false if not found
+                    bool tree_search_result = binary_tree.Search(special_building); // Searches the current special building in the binary tree. Returns true if found and false if not found
 
                     if (tree_search_result) // Enter only when current special building has been found in the binary tree
                     {
