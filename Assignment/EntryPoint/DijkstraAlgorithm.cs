@@ -115,12 +115,12 @@ namespace EntryPoint
                         smallest = previous[smallest];
                     }
 
-                    break; // Breaks the while loop with (previous.ContainsKey(smallest)). After that, the value for the path variable will be returned
+                    break; // Breaks the while loop with (previous.ContainsKey(smallest)). 
                 }
 
                 if (distances[smallest] == int.MaxValue)
                 {
-                  break; // Breaks the big while loop (with nodes.Count > 0)
+                  break; // Breaks the big while loop (with nodes.Count > 0) After that, the value for the path variable will be returned
                 }
 
                 foreach (var neighbor in vertices[smallest]) // Goes through each Dictionary value for the key (with value smallest) in vertices dictionary
