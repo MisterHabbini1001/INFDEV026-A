@@ -169,10 +169,13 @@ namespace EntryPoint
 */
 
 /*
-                foreach (var neighbor in vertices[smallest]) 
-                {
+MAIN STEPS OF DIJKSTRA ALGORITHM:
 
-                }
+1 = Pick the unvisited vertex with the lowest distance
+2 = Calculate the distance through it to each unvisited neighbor
+3 = Update the neighbor's distance if smaller
+4 = Mark as visited when done with neighbors
+
 */
 
 
