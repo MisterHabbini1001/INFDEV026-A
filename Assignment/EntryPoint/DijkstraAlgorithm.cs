@@ -23,8 +23,8 @@ namespace EntryPoint
 
             foreach (var road in roadslist)
             {
-                graph.AddNode(road.Item1); // Item1 is STARTING POINT of ROAD
-                graph.AddNode(road.Item2); // Item2 is END POINT of ROAD
+                graph.AddNode(road.Item1);                                                            // Item1 is STARTING POINT of ROAD
+                graph.AddNode(road.Item2);                                                            // Item2 is END POINT of ROAD
                 graph.AddRoad(road.Item1, road.Item2, (int)Vector2.Distance(road.Item1, road.Item2)); // Calculates the distance between the 2 points. Adds road to the graph
             }
 
@@ -64,8 +64,8 @@ namespace EntryPoint
 
         public List<Tuple<Vector2, Vector2>> ShortestPath(Vector2 startPoint, Vector2 endPoint)
         {
-            Dictionary<Vector2, Vector2> previous = new Dictionary<Vector2, Vector2>();
-            Dictionary<Vector2, int> distances = new Dictionary<Vector2, int>();
+            Dictionary<Vector2, Vector2> previous_neighbors = new Dictionary<Vector2, Vector2>();
+            Dictionary<Vector2, int> node_total_distances = new Dictionary<Vector2, int>();
             List<Vector2> nodes = new List<Vector2>();
 
             List<Tuple<Vector2, Vector2>> path = null; // Resulting shortest path is empty in the beginning (stating the obvious here). 
@@ -75,13 +75,13 @@ namespace EntryPoint
             {
                 if (node.Key == startPoint) // startPoint = Vector2 for the house.  Checks if it matches with any of the keys in the vertices dictionary
                 {
-                  distances[node.Key] = 0; // Its key in the distances dictionary will be set to 0
+                  node_total_distances[node.Key] = 0; // Its key in the node_total_distances dictionary will be set to 0
                 }
 
                 else
                 {
-                  distances[node.Key] = int.MaxValue; // Key in distances dictionary if set to the MaxValue that the int variable type 
-                                                      // This is done in order to (somehow) achieve infinity
+                  node_total_distances[node.Key] = int.MaxValue; // Key in node_total_distances dictionary if set to the MaxValue that the int variable type 
+                                                                 // This is done in order to (somehow) achieve infinity
                 }
 
                 nodes.Add(node.Key); // Adds the current Vector2 of vertices to the nodes list
@@ -89,38 +89,39 @@ namespace EntryPoint
 
             while (nodes.Count > 0)
             {
-                nodes.Sort((x, y) => distances[x] - distances[y]); // Substracting int values for x and y keys of distances dictionary. x and y are both vectors. Comparison is distance
-                var smallest = nodes[0]; // Selects the first element of the nodes list
-                nodes.Remove(smallest); // Removes the smallest node from the nodes list. In other words, the 1st element of the list will always be removed
+                nodes.Sort((x, y) => node_total_distances[x] - node_total_distances[y]); // Substracting int values for x and y keys of node_total_distances dictionary. x and y are both vectors. Comparison is distance
+                Vector2 smallest_node_vector = nodes[0];                                             // Selects the first element of the nodes list
+                nodes.Remove(smallest_node_vector);                                                  // Removes the smallest_node_vector node from the nodes list. In other words, the 1st element of the list will always be removed
 
-                if (smallest == endPoint)  // Checks f the smallest road is equal to the end road
+                if (smallest_node_vector == endPoint)  // Checks f the smallest_node_vector road is equal to the end road
                 {
                     path = new List<Tuple<Vector2, Vector2>>(); // Path variable is instantiated
 
-                    while (previous.ContainsKey(smallest))
+                    while (previous_neighbors.ContainsKey(smallest_node_vector)) // While loop will keep adding roads to path until all the nodes of the neighbor_nodes have been taken
                     {
-                        Tuple<Vector2, Vector2> pair;
-                        pair = new Tuple<Vector2, Vector2>(smallest, previous[smallest]);
-                        path.Add(pair);
-                        smallest = previous[smallest];
+                        Tuple<Vector2, Vector2> road;                                     // Creating a new road variable
+                        road = new Tuple<Vector2, Vector2>(smallest_node_vector, previous_neighbors[smallest_node_vector]); // Initializing the pair variable. Values that are given are smallest_node_vector vector and its value in previous_neighbors dictionary
+                        path.Add(road);                                                   // Pair of starting point and end point of road is added to the total path
+                        smallest_node_vector = previous_neighbors[smallest_node_vector];                                    // Value of smallest_node_vector is set to its value in previous_neighbors dictionary. This for no infinite while loop
                     }
 
-                    break; // Breaks the while loop with (previous.ContainsKey(smallest)). 
+                    break; // Breaks the while loop with (previous_neighbors.ContainsKey(smallest_node_vector)). 
                 }
 
-                if (distances[smallest] == int.MaxValue)
+                if (node_total_distances[smallest_node_vector] == int.MaxValue) // When the distance of a node is infinite, break the loop. Otherwise, an exception might be thrown
                 {
                   break; // Breaks the big while loop (with nodes.Count > 0) After that, the value for the reversed_path variable will be returned
                 }
 
-                foreach (var neighbor in vertices[smallest]) // Goes through each Dictionary value for the key (with value smallest) in vertices dictionary
+                foreach (var neighbor_node in vertices[smallest_node_vector]) // Goes through each Dictionary value for the key (with value smallest_node_vector) in vertices dictionary
                 {
-                    var totalDistance = distances[smallest] + neighbor.Value; // Calculate distance through each unvisited neightbor
+                    int totalDistance = node_total_distances[smallest_node_vector] + neighbor_node.Value; // Calculate distance through each unvisited neightbor
 
-                    if (totalDistance < distances[neighbor.Key]) // Update the neighbor's distance if smaller
+                    if (totalDistance < node_total_distances[neighbor_node.Key]) // Update the neighbor_node's distance if smaller
                     {
-                        distances[neighbor.Key] = totalDistance; // Update the neighbor's distance if smaller
-                        previous[neighbor.Key] = smallest;
+                        node_total_distances[neighbor_node.Key] = totalDistance; // Update the neighbor_node's distance if smaller
+                        previous_neighbors[neighbor_node.Key] = smallest_node_vector;       // Adds for the current neighbor_node key as value the current smallest_node_vector vector
+                                                                 // For the house vector (= startingbuilding), its value will be given to its 1st neighbor_node
                     }
                 }
            }
@@ -141,9 +142,9 @@ namespace EntryPoint
 MAIN STEPS OF DIJKSTRA ALGORITHM:
 
 1 = Pick the unvisited vertex with the lowest distance
-2 = Calculate the distance through it to each unvisited neighbor
-3 = Update the neighbor's distance if smaller
-4 = Mark as visited when done with neighbors
+2 = Calculate the distance through it to each unvisited neighbor_node
+3 = Update the neighbor_node's distance if smaller
+4 = Mark as visited when done with neighbor_nodes
 
 */
 
