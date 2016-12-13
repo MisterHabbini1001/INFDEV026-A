@@ -14,18 +14,8 @@ namespace EntryPoint
             Graph graph = new Graph();                                                // Graph is empty
             graph = InsertGraph(graph, roads, startingBuilding, destinationBuilding); // Graph gets created here
 
-            List<Tuple<Vector2, Vector2>> resultListBA = new List<Tuple<Vector2, Vector2>>();
-            resultListBA = graph.ShortestPath(startingBuilding, destinationBuilding); // Shortest path is determined between startingBuilding and destinationBuilding: is then stored in resultListBA variable
-
-            List<Tuple<Vector2, Vector2>> resultListAB = new List<Tuple<Vector2, Vector2>>(); // End result that should be returned
-            while (resultListBA.Count > 0)
-            {
-                resultListAB.Add(resultListBA[resultListBA.Count - 1]); // Adds all elements from resultListBA to resultListAB. It goes from the LAST till the FIRST element of the list
-                resultListBA.RemoveAt(resultListBA.Count - 1);          // To prevent an infinite loop of occuring
-            }
-
-            return resultListAB; // Returning end result
-        } 
+            return graph.ShortestPath(startingBuilding, destinationBuilding); // Shortest path is determined between startingBuilding and destinationBuilding: is then stored in resultListBA variable
+        }
 
         private static Graph InsertGraph(Graph graph, List<Tuple<Vector2, Vector2>> roadslist, Vector2 startPoint, Vector2 endPoint)
         {
@@ -120,7 +110,7 @@ namespace EntryPoint
 
                 if (distances[smallest] == int.MaxValue)
                 {
-                  break; // Breaks the big while loop (with nodes.Count > 0) After that, the value for the path variable will be returned
+                  break; // Breaks the big while loop (with nodes.Count > 0) After that, the value for the reversed_path variable will be returned
                 }
 
                 foreach (var neighbor in vertices[smallest]) // Goes through each Dictionary value for the key (with value smallest) in vertices dictionary
@@ -135,7 +125,14 @@ namespace EntryPoint
                 }
            }
 
-           return path;
+            List<Tuple<Vector2, Vector2>> reversed_path = new List<Tuple<Vector2, Vector2>>(); // End result that should be returned. Otherwise, colors of points between house and destination_building are shown wrong
+            while (path.Count > 0)
+            {
+                reversed_path.Add(path[path.Count - 1]); // Adds all elements from resultListBA to resultListAB. It goes from the LAST till the FIRST element of the list
+                path.RemoveAt(path.Count - 1);          // To prevent an infinite loop of occuring
+            }
+
+            return reversed_path;
         }
     }
 }
