@@ -37,7 +37,6 @@ namespace EntryPoint
                 }
 
                 inception_list.Add(inter_result);
-                //inter_result.RemoveRange(0, inter_result.Count());   Fixed the exercise: no unit tests whatso ever
             }
 
             return inception_list.AsEnumerable<IEnumerable<Vector2>>();
@@ -53,21 +52,21 @@ namespace EntryPoint
           root = null;
         }
 
-        public bool IsEmpty() // Function that checks if the root is empty: true if root is null, false otherwise
+        public bool IsRootEmpty() // Function that checks if the root is empty: true if root is null, false otherwise
         {
           return root == null; 
         }
 
         public void Insert(Vector2 d) // Inserts node with given value in the binary tree
         {
-            if (IsEmpty()) // Checks if root is empty
+            if (IsRootEmpty()) // Checks if root is empty
             {
               root = new Node(d); // Create new root node when empty
             }
 
             else
             {
-              root.InsertData(ref root, d); // Insert new node with value WHEN ROOT IS NOT EMPTY
+              root.AddNodeWithData(ref root, d); // Insert new node with value WHEN ROOT IS NOT EMPTY
             }
         }
 
@@ -79,7 +78,7 @@ namespace EntryPoint
 
     class Node 
     {
-        Vector2 sb_vector; 
+        Vector2 sb_vector; // Vector for special building
         Node rightLeaf;
         Node leftLeaf;
 
@@ -90,7 +89,7 @@ namespace EntryPoint
             leftLeaf = null;
         }
 
-        public void InsertData(ref Node node, Vector2 data) // Inserts vector data for the current node
+        public void AddNodeWithData(ref Node node, Vector2 data) // Inserts vector data for the current node
         {
             if (node == null) // Checks if the node is empty
             {
@@ -99,12 +98,12 @@ namespace EntryPoint
 
             else if (node.sb_vector.Length() >= data.Length()) // When the node vector is further away from point (0,0) then the data vector (= BST property). Also applies when they are the same vector   
             {
-               InsertData(ref node.leftLeaf, data); // Recursive function call to go the left subtree
+               AddNodeWithData(ref node.leftLeaf, data); // Recursive function call to go the left subtree
             }  
              
             else if (node.sb_vector.Length() < data.Length())  // When the data vector is further away from point (0,0) then the node vector (= BST property) 
             {
-              InsertData(ref node.rightLeaf, data); // Recursive function call to go the right subtree
+              AddNodeWithData(ref node.rightLeaf, data); // Recursive function call to go the right subtree
             }     
         }
 
