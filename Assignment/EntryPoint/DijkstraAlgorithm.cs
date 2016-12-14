@@ -11,29 +11,29 @@ namespace EntryPoint
     {
         public static IEnumerable<Tuple<Vector2, Vector2>> RoadDetermination(Vector2 startingBuilding, Vector2 destinationBuilding, List<Tuple<Vector2, Vector2>> roads) 
         {
-            Digraph digraph = new Digraph();                                                // Digraph is empty
-            digraph = InsertDigraph(digraph, roads, startingBuilding, destinationBuilding); // Digraph gets created here
+            Graph graph = new Graph();                                                // Graph is empty
+            graph = InsertGraph(graph, roads, startingBuilding, destinationBuilding); // Graph gets created here
 
-            return digraph.ShortestPath(startingBuilding, destinationBuilding); // Shortest path is determined between startingBuilding and destinationBuilding: is then stored in resultListBA variable
+            return graph.ShortestPath(startingBuilding, destinationBuilding); // Shortest path is determined between startingBuilding and destinationBuilding: is then stored in resultListBA variable
         }
 
-        private static Digraph InsertDigraph(Digraph digraph, List<Tuple<Vector2, Vector2>> roadslist, Vector2 startPoint, Vector2 endPoint)
+        private static Graph InsertGraph(Graph graph, List<Tuple<Vector2, Vector2>> roadslist, Vector2 startPoint, Vector2 endPoint)
         {
-            digraph.AddNode(startPoint); // Adds startingBuilding as FIRST NODE to the Digraph
+            graph.AddNode(startPoint); // Adds startingBuilding as FIRST NODE to the Graph
 
             foreach (var road in roadslist)
             {
-                digraph.AddNode(road.Item1);                                                            // Item1 is STARTING POINT of ROAD
-                digraph.AddNode(road.Item2);                                                            // Item2 is END POINT of ROAD
-                digraph.AddRoad(road.Item1, road.Item2, (int)Vector2.Distance(road.Item1, road.Item2)); // Calculates the distance between the 2 points. Adds road to the Digraph
+                graph.AddNode(road.Item1);                                                            // Item1 is STARTING POINT of ROAD
+                graph.AddNode(road.Item2);                                                            // Item2 is END POINT of ROAD
+                graph.AddRoad(road.Item1, road.Item2, (int)Vector2.Distance(road.Item1, road.Item2)); // Calculates the distance between the 2 points. Adds road to the Graph
             }
 
-            digraph.AddNode(endPoint); // Adds destinationBuilding as LAST NODE to the Digraph
-            return digraph;
+            graph.AddNode(endPoint); // Adds destinationBuilding as LAST NODE to the Graph
+            return graph;
         } 
     }
 
-    class Digraph
+    class Graph
     {
         Dictionary<Vector2, Dictionary<Vector2, int>> vertices = new Dictionary<Vector2, Dictionary<Vector2, int>>();
 
