@@ -20,6 +20,7 @@ namespace EntryPoint
                 binary_tree.Insert(special_building);                     // Inserts the current building into the Binary Tree
             }
 
+            binary_tree.Count();   // Prints total amount of nodes in the binary tree
             binary_tree.Display(); // Displays the entire binary tree on the console
 
             List<List<Vector2>> inception_list = new List<List<Vector2>>(); // Final result that must be returned at the end of the function
@@ -105,11 +106,18 @@ namespace EntryPoint
 
     class BinaryTree 
     {
-        Node root; 
+        Node root;
+        int count; // Amo
 
         public BinaryTree() // Class constructor: root is empty in the beginning (because it obviously needs to grow first :p)
         {
           root = null;
+          count = 0;
+        }
+
+        public void Count() // Display amount of nodes in binary tree on to the console
+        {
+           Console.WriteLine("Total amount of nodes in binary tree: " + count);
         }
 
         public bool IsRootEmpty() // Function that checks if the root is empty: true if root is null, false otherwise
@@ -128,6 +136,8 @@ namespace EntryPoint
             {
               root.AddNodeWithData(ref root, d); // Insert new node with value WHEN ROOT IS NOT EMPTY
             }
+
+            count++; // Increments total node amount in binary tree by 1.
         }
 
         public bool Search(Vector2 sb_distance) // Searches for special building inside binary tree: returns true if found, false if not found

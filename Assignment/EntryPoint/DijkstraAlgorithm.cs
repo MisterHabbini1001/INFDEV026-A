@@ -13,6 +13,7 @@ namespace EntryPoint
         {
             Graph graph = new Graph();                                                // Graph is empty
             graph = InsertGraph(graph, roads, startingBuilding, destinationBuilding); // Graph gets created here
+            graph.DisplayGraph();                                                     // Graph gets displayed here on the console
 
             return graph.ShortestPath(startingBuilding, destinationBuilding); // Shortest path is determined between startingBuilding and destinationBuilding: is then stored in resultListBA variable
         }
@@ -35,9 +36,9 @@ namespace EntryPoint
 
     class Graph
     {
-        Dictionary<Vector2, Dictionary<Vector2, int>> vertices = new Dictionary<Vector2, Dictionary<Vector2, int>>();
+        Dictionary<Vector2, Dictionary<Vector2, int>> vertices = new Dictionary<Vector2, Dictionary<Vector2, int>>(); // Collection of vertices in the graph. Each vertice is a key, which has as value one of the vertices it is connected to
 
-        public void AddNode(Vector2 location)
+        public void AddNode(Vector2 location) // Adds a node to the graph with the value vor the location parameter
         {
             if (!vertices.ContainsKey(location)) // Checks if the vertices dictionary contains a key with the value given for location. 
                                                  // If that is not the case (= false), then it converts to true, which means the if block is entered
@@ -47,7 +48,7 @@ namespace EntryPoint
             }
         }
 
-        public void AddRoad(Vector2 roadpoint1, Vector2 roadpoint2, int length_of_road)
+        public void AddRoad(Vector2 roadpoint1, Vector2 roadpoint2, int length_of_road) // Adds a road between two points on the map. The length between the points is also given
         {
             if (!vertices[roadpoint1].ContainsKey(roadpoint2)) // Checks if the value in the vertices dictionary with the roadpoint1 key contains a key with the value for roadPoint2
                                                                // If that is not the case (= false), then it converts to true, which means the if block is entered
@@ -62,11 +63,23 @@ namespace EntryPoint
             }
         }
 
+        public void DisplayGraph() // Displays the vertices in the graph on to the console
+        {
+          foreach(var vertex in vertices) // For each dictionary in the vertices dictionary
+          {
+             Console.WriteLine("Current vertex in the graph with vector2 value: " + vertex.Key); // Display current Vector2 in vertices
+             foreach (var vertex_neighbor in vertex.Value) // Goes through all the neighbors for current Vector2
+             {
+                Console.WriteLine("Neighbor vertex: " + vertex_neighbor.Key + " has length: " + vertex_neighbor.Value + " between current vertex: " + vertex.Key); // Display current neighbor with corresponding distance
+             }
+          }
+        }
+
         public List<Tuple<Vector2, Vector2>> ShortestPath(Vector2 startPoint, Vector2 endPoint)
         {
-            Dictionary<Vector2, Vector2> previous_neighbors = new Dictionary<Vector2, Vector2>();
-            Dictionary<Vector2, int> node_total_distances = new Dictionary<Vector2, int>();
-            List<Vector2> nodes = new List<Vector2>();
+            Dictionary<Vector2, Vector2> previous_neighbors = new Dictionary<Vector2, Vector2>(); // While calculating the shortest path, this variable will store the previous neighbors of a node when it is done with them.
+            Dictionary<Vector2, int> node_total_distances = new Dictionary<Vector2, int>(); // Variable that holds the shortest distance between nodes and all the other nodes in the graph
+            List<Vector2> nodes = new List<Vector2>(); // List that will hold all the nodes in the graph
 
             List<Tuple<Vector2, Vector2>> path = null; // Resulting shortest path is empty in the beginning (stating the obvious here). 
                                                        // Is returned by the ShortestPath function
@@ -138,15 +151,7 @@ namespace EntryPoint
     }
 }
 
-/*
-MAIN STEPS OF DIJKSTRA ALGORITHM:
 
-1 = Pick the unvisited vertex with the lowest distance
-2 = Calculate the distance through it to each unvisited neighbor_node
-3 = Update the neighbor_node's distance if smaller
-4 = Mark as visited when done with neighbor_nodes
-
-*/
 
 
 
