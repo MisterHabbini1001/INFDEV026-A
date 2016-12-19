@@ -18,7 +18,7 @@ namespace EntryPoint
             return graph.ShortestPath(startingBuilding, destinationBuilding); // Shortest path is determined between startingBuilding and destinationBuilding: is then stored in resultListBA variable
         }
 
-        private static Graph InsertGraph(Graph graph, List<Tuple<Vector2, Vector2>> roadslist, Vector2 startPoint, Vector2 endPoint)
+        static Graph InsertGraph(Graph graph, List<Tuple<Vector2, Vector2>> roadslist, Vector2 startPoint, Vector2 endPoint)
         {
             graph.AddNode(startPoint); // Adds startingBuilding as FIRST NODE to the Graph
 
