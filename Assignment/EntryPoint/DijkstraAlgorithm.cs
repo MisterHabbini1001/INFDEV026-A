@@ -65,6 +65,7 @@ namespace EntryPoint
 
         public void DisplayGraph() // Displays the vertices in the graph on to the console
         {
+          /*
           foreach(var vertex in vertices) // For each dictionary in the vertices dictionary
           {
              Console.WriteLine("Current vertex in the graph with vector2 value: " + vertex.Key); // Display current Vector2 in vertices
@@ -73,6 +74,7 @@ namespace EntryPoint
                 Console.WriteLine("Neighbor vertex: " + vertex_neighbor.Key + " has length: " + vertex_neighbor.Value + " between current vertex: " + vertex.Key); // Display current neighbor with corresponding distance
              }
           }
+          */
         }
 
         public List<Tuple<Vector2, Vector2>> ShortestPath(Vector2 startPoint, Vector2 endPoint)
@@ -103,10 +105,12 @@ namespace EntryPoint
             while (nodes.Count > 0)
             {
                 nodes.Sort((x, y) => node_total_distances[x] - node_total_distances[y]); // Substracting int values for x and y keys of node_total_distances dictionary. x and y are both vectors. Comparison is distance
+                                                                                         // Insertion sort is performed here
+
                 Vector2 smallest_node_vector = nodes[0];                                             // Selects the first element of the nodes list
                 nodes.Remove(smallest_node_vector);                                                  // Removes the smallest_node_vector node from the nodes list. In other words, the 1st element of the list will always be removed
 
-                if (smallest_node_vector == endPoint)  // Checks f the smallest_node_vector road is equal to the end road
+                if (smallest_node_vector == endPoint)  // Checks if the smallest_node_vector road is equal to the end road
                 {
                     path = new List<Tuple<Vector2, Vector2>>(); // Path variable is instantiated
 
