@@ -65,7 +65,6 @@ namespace EntryPoint
 
         public void DisplayGraph() // Displays the vertices in the graph on to the console
         {
-          /*
           foreach(var vertex in vertices) // For each dictionary in the vertices dictionary
           {
              Console.WriteLine("Current vertex in the graph with vector2 value: " + vertex.Key); // Display current Vector2 in vertices
@@ -74,7 +73,6 @@ namespace EntryPoint
                 Console.WriteLine("Neighbor vertex: " + vertex_neighbor.Key + " has length: " + vertex_neighbor.Value + " between current vertex: " + vertex.Key); // Display current neighbor with corresponding distance
              }
           }
-          */
         }
 
         public List<Tuple<Vector2, Vector2>> ShortestPath(Vector2 startPoint, Vector2 endPoint)
