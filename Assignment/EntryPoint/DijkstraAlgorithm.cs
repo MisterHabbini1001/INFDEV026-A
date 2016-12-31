@@ -153,6 +153,21 @@ namespace EntryPoint
     }
 }
 
+/*
+Steps of Dijkstra Algorithm (according to week 5 slide 45:
+
+1. Assign to every node a tentative distance value: set it to zero for the initial node and to infinity (∞) for all other nodes.                                                                                     LINES 87-101 Dijkstraalgorithm
+
+2. Set the initial node as current. Mark all other nodes unvisited. Create a set of all the unvisited nodes called the unvisited set.
+
+3. For the current node, consider all of its unvisited neighbors and calculate their tentative distances. Compare the newly calculated tentative distance to the current assigned value and assign the smaller one. 
+
+4. When we are done considering all of the neighbors of the current node, mark the current node as visited and remove it from the unvisited set. A visited node will never be checked again.
+
+5. Select the unvisited node that is marked with the smallest tentative distance, and set it as the new "current node" then go back to step 3.
+
+*/
+
 
 
 
