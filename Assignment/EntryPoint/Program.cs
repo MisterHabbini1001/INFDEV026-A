@@ -55,28 +55,14 @@ namespace EntryPoint
        return DijkstraAlgorithm.RoadDetermination(startingBuilding, destinationBuilding, roads.ToList<Tuple<Vector2, Vector2>>()); // Calls RoadDetermination function in static DijkstraAlgorithm class
     }
 
-    private static IEnumerable<IEnumerable<Tuple<Vector2, Vector2>>> FindRoutesToAll(Vector2 startingBuilding, IEnumerable<Vector2> destinationBuildings, IEnumerable<Tuple<Vector2, Vector2>> roads)
+    private static IEnumerable<IEnumerable<Tuple<Vector2, Vector2>>> FindRoutesToAll(Vector2 startingBuilding, IEnumerable<Vector2> destinationBuildings, IEnumerable<Tuple<Vector2, Vector2>> roads) // EXERCISE 3 - Graphs - Option 2: Floyd-Warshall
     {
-      List<List<Tuple<Vector2, Vector2>>> result = new List<List<Tuple<Vector2, Vector2>>>();
-
-      foreach (var d in destinationBuildings)
-      {
-        var startingRoad = roads.Where(x => x.Item1.Equals(startingBuilding)).First();
-        List<Tuple<Vector2, Vector2>> fakeBestPath = new List<Tuple<Vector2, Vector2>>() { startingRoad };
-        var prevRoad = startingRoad;
-
-        for (int i = 0; i < 30; i++)
-        {
-          prevRoad = (roads.Where(x => x.Item1.Equals(prevRoad.Item2)).OrderBy(x => Vector2.Distance(x.Item2, d)).First());
-          fakeBestPath.Add(prevRoad);
-        }
-        result.Add(fakeBestPath);
-      }
-      return result;
+       return FloydWarshallAlgorithm.DeterminationOfRoads(startingBuilding, destinationBuildings.ToList<Vector2>(), roads.ToList<Tuple<Vector2, Vector2>>()); // Calls DeterminationOfRoads function in static FloydWarshallAlgorithm class
     }
   }
 #endif
 }
+
 
 
 
