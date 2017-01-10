@@ -9,10 +9,10 @@ namespace EntryPoint
 {
     public static class FloydWarshallAlgorithm
     {
-        public static IEnumerable<IEnumerable<Vector2>> DeterminationOfRoads(Vector2 startingBuilding, IEnumerable<Vector2> destinationBuildings, IEnumerable<Tuple<Vector2, Vector2>> roads)
+        public static IEnumerable<IEnumerable<Tuple<Vector2, Vector2>>> DeterminationOfRoads(Vector2 startingBuilding, IEnumerable<Vector2> destinationBuildings, IEnumerable<Tuple<Vector2, Vector2>> roads)
         {
-            List<List<Vector2>> inception_list = new List<List<Vector2>>(); // Placeholder
-            return inception_list.AsEnumerable<IEnumerable<Vector2>>();     // Placeholder
+            List<List<Tuple<Vector2, Vector2>>> inception_list = new List<List<Tuple<Vector2, Vector2>>>(); // Placeholder
+            return inception_list.AsEnumerable<IEnumerable<Tuple<Vector2, Vector2>>>();                     // Placeholder
         }
     }
 }
