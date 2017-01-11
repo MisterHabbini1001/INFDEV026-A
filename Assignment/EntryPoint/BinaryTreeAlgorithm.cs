@@ -21,7 +21,12 @@ namespace EntryPoint
             }
 
             binary_tree.Count();   // Prints total amount of nodes in the binary tree
-            binary_tree.Display(); // Displays the entire binary tree on the console
+
+            // Only comment out 1 of the 3 traversal functions below (so choose very very wisely :p)
+
+            //binary_tree.InOrderTraversal(); // Entire binary tree on the console (by performing IN ORDER TRAVERSAL on it)
+            binary_tree.PreOrderTraversal(); // Entire binary tree on the console (by performing PRE ORDER TRAVERSAL on it)
+            //binary_tree.PostOrderTraversal(); // Entire binary tree on the console (by performing POST ORDER TRAVERSAL on it)
 
             List<List<Vector2>> inception_list = new List<List<Vector2>>(); // Final result that must be returned at the end of the function
             List<Vector2> inter_result = new List<Vector2>();               // Intermediate result that must be returned at the end of each inner loop
@@ -115,7 +120,7 @@ namespace EntryPoint
           count = 0;
         }
 
-        public void Count() // Display amount of nodes in binary tree on to the console
+        public void Count() // Amount of nodes in binary tree on to the console
         {
            Console.WriteLine("Total amount of nodes in binary tree: " + count);
         }
@@ -145,10 +150,37 @@ namespace EntryPoint
           return root.Search(root, sb_distance);
         }
 
-        public void Display()
+        public void Delete(Vector2 d) // Deletes node with given value in the binary tree
         {
-            if (!IsRootEmpty())
-                root.Display(root);
+          root.Delete(root, d);
+        }
+
+        public void InOrderTraversal() // Function that performs in order traversal on the binary tree
+                                       // Has the following order: left subtree ---> root ---> right subtree
+                                       // In respect to the BST (= Binary Search Tree) property, vector2.lengths will be printed on the console in increasing order
+        {
+            if (!IsRootEmpty()) // First checks if root is not empty. Otherwise, traversing through the tree is pretty f*cking useless
+            {
+              root.InOrderTraversal(root);
+            }
+        }
+
+        public void PreOrderTraversal() // Function that performs pre order traversal on the binary tree
+                                        // Has the following order: root ---> left subtree ---> right subtree
+        {
+            if (!IsRootEmpty()) // First checks if root is not empty. Otherwise, traversing through the tree is pretty f*cking useless
+            {
+                root.PreOrderTraversal(root);
+            }
+        }
+
+        public void PostOrderTraversal() // Function that performs post order traversal on the binary tree
+                                         // Has the following order: left subtree ---> right subtree ---> root
+        {
+            if (!IsRootEmpty()) // First checks if root is not empty. Otherwise, traversing through the tree is pretty f*cking useless
+            {
+                root.PostOrderTraversal(root);
+            }
         }
     }
 
@@ -208,16 +240,51 @@ namespace EntryPoint
             return false; // If the value for seeker is not found in the tree
         }
 
-        public void Display(Node n)
+        public void Delete(Node node, Vector2 deleter) // Deletes node with value deleter
         {
-            if (n == null) // When there is nothing to display
+            // IMPLEMENTATION FOR DELETING NODES OF BINARY TREE SHOULD GO HERE :PPPPPP
+        }
+
+        public void InOrderTraversal(Node n) // Function of node that performs in order traversal on the binary tree (= left subtree ---> root ---> right subtree)
+        {
+            Console.WriteLine("In order traversal I am now :p");
+            if (n == null) // When there is nothing
             {
+              Console.WriteLine("IOT current node is NULL :("); 
               return;
             }
 
-            Console.WriteLine(n.sb_vector);
-            Display(n.leftLeaf);
-            Display(n.rightLeaf);
+            InOrderTraversal(n.leftLeaf);
+            Console.WriteLine("Current node with vector2 value: " + n.sb_vector + "which has a length of: " + n.sb_vector.Length()); // Prints the value of vector2 with length on the console
+            InOrderTraversal(n.rightLeaf);
+        }
+
+        public void PreOrderTraversal(Node n) // Function of node that performs in order traversal on the binary tree (= root ---> left subtree ---> right subtree)
+        {
+            Console.WriteLine("Pre order traversal I am now :p");
+            if (n == null) // When there is nothing
+            {
+                Console.WriteLine("PROT current node is NULL :(");
+                return;
+            }
+
+            Console.WriteLine("Current node with vector2 value: " + n.sb_vector + "which has a length of: " + n.sb_vector.Length()); // Prints the value of vector2 with length on the console
+            PreOrderTraversal(n.leftLeaf);
+            PreOrderTraversal(n.rightLeaf);
+        }
+
+        public void PostOrderTraversal(Node n) // Function of node that performs post order traversal on the binary tree (= left subtree ---> right subtree ---> root)
+        {
+            Console.WriteLine("Post order traversal I am now :p");
+            if (n == null) // When there is nothing
+            {
+                Console.WriteLine("POOT current node is NULL :(");
+                return;
+            }
+
+            PreOrderTraversal(n.leftLeaf);
+            PreOrderTraversal(n.rightLeaf);
+            Console.WriteLine("Current node with vector2 value: " + n.sb_vector + "which has a length of: " + n.sb_vector.Length()); // Prints the value of vector2 with length on the console
         }
     }
 }
