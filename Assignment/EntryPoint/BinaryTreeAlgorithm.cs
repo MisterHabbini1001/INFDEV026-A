@@ -20,7 +20,9 @@ namespace EntryPoint
                 binary_tree.Insert(special_building);                     // Inserts the current building into the Binary Tree
             }
 
-            binary_tree.Count();   // Prints total amount of nodes in the binary tree
+            binary_tree.Count();   // Prints total amount of nodes in the binary tree BEFORE DELETION
+            //binary_tree.Delete(specialBuildings.ElementAt(9));
+            //binary_tree.Count(); // Prints total amount of nodes in the binary tree AFTER DELETION
 
             // Only comment out 1 of the 3 traversal functions below (so choose very very wisely :p)
 
@@ -153,6 +155,7 @@ namespace EntryPoint
         public void Delete(Vector2 d) // Deletes node with given value in the binary tree
         {
           root.Delete(root, d);
+          count--; // Decrements total node amount in binary tree by 1.
         }
 
         public void InOrderTraversal() // Function that performs in order traversal on the binary tree
@@ -242,7 +245,37 @@ namespace EntryPoint
 
         public void Delete(Node node, Vector2 deleter) // Deletes node with value deleter
         {
-            // IMPLEMENTATION FOR DELETING NODES OF BINARY TREE SHOULD GO HERE :PPPPPP
+            // FULL IMPLEMENTATION FOR DELETING NODES OF BINARY TREE SHOULD GO HERE :PPPPPP
+            if(node == null)
+            {
+                return;
+            }
+
+            else if(node.sb_vector == deleter && node.leftLeaf == null && node.rightLeaf == null) // When node to be deleted is leaf (with no RIGHT or LEFT child nodes to speak of what so ever)
+            {
+                node = null;
+                return;
+            }
+
+            else if (node.sb_vector == deleter && node.leftLeaf != null && node.rightLeaf == null) // When node to be deleted has only LEFT child node
+            {
+                node = node.leftLeaf;
+                node.leftLeaf = null;
+                return;
+            }
+
+            else if (node.sb_vector == deleter && node.leftLeaf == null && node.rightLeaf != null) // When node to be deleted has only RIGHT child node
+            {
+                node = node.rightLeaf;
+                node.rightLeaf = null;
+                return;
+            }
+
+            else if (node.sb_vector == deleter && node.leftLeaf != null && node.rightLeaf != null) // When node to be deleted has LEFT and RIGHT child nodes (in other words: prepare to enter a world of pain.... recursive pain that is :p)
+            {
+                // NEEDS REAL IMPLEMENTATION
+                return;
+            }
         }
 
         public void InOrderTraversal(Node n) // Function of node that performs in order traversal on the binary tree (= left subtree ---> root ---> right subtree)
@@ -288,6 +321,23 @@ namespace EntryPoint
         }
     }
 }
+
+/*
+BINARY SEARCH TREE - DELETION
+
+We want to remove the node with value 𝑣
+4 cases:
+
+Deleting a leaf  we can simply remove it from the tree (easy!)
+Deleting a node with one LEFT child  remove the node and replace it with its LEFT child
+Deleting a node with one RIGHT child  remove the node and replace it with its RIGHT child
+
+Deleting a node with two children  more complicated recursive procedure
+call the node to be deleted 𝑛 but do not delete 𝑛
+choose either its in-order successor node or its in-order predecessor node, 𝑟
+copy the value of 𝑟 to 𝑛, then recursively call delete on 𝑟 until reaching one of the first two cases
+
+*/
 
 
 
